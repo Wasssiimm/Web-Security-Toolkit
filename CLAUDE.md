@@ -227,3 +227,6 @@ The password **never leaves the browser in plaintext**:
 | 2026-05-11 | Node as API gateway, Python for security logic | Node excels at I/O; Python has better security libraries |
 | 2026-05-11 | Vite proxy instead of CORS headers | Avoids managing CORS during development; cleaner setup |
 | 2026-05-11 | TCP-connect nmap scan (`-sT`) | No root/admin required on Windows |
+| 2026-05-11 | Feature branch per phase | Keeps master clean; one branch per phase, merged when complete |
+| 2026-05-11 | `.env.example` committed, `.env` gitignored | Documents required variables without exposing secrets |
+| 2026-05-11 | `__init__.py` in Python routers/ and services/ | Makes them proper Python packages so imports resolve correctly |
