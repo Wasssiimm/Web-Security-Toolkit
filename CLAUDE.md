@@ -189,7 +189,7 @@ The password **never leaves the browser in plaintext**:
 
 ### 🔲 Phase 2 – Web Security Scanner Backend (Next)
 - [x] `headerService.js` – test against real URLs
-- [ ] `header_analyzer.py` – risk rating per header
+- [x] `header_analyzer.py` – risk rating per header
 - [ ] `port_scanner.py` – test nmap on Windows
 - [ ] `vuln_detector.py` – vulnerability logic
 - [ ] Report endpoint + scoring
