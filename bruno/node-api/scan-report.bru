@@ -1,0 +1,17 @@
+meta {
+  name: Scan Report (full)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{nodeUrl}}/api/scan/report
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "url": "{{testUrl}}"
+  }
+}
