@@ -187,13 +187,13 @@ The password **never leaves the browser in plaintext**:
 - [x] Private IP blocker middleware in place
 - [x] CLAUDE.md created
 
-### 🔲 Phase 2 – Web Security Scanner Backend (Next)
-- [ ] `headerService.js` – test against real URLs
-- [ ] `header_analyzer.py` – risk rating per header
-- [ ] `port_scanner.py` – test nmap on Windows
-- [ ] `vuln_detector.py` – vulnerability logic
-- [ ] Report endpoint + scoring
-- [ ] Test via Postman
+### ✅ Phase 2 – Web Security Scanner Backend (Complete)
+- [x] `headerService.js` – test against real URLs
+- [x] `header_analyzer.py` – risk rating per header
+- [x] `port_scanner.py` – test nmap on Windows
+- [x] `vuln_detector.py` – vulnerability logic
+- [x] Report endpoint + scoring
+- [x] Test via Bruno
 
 ### 🔲 Phase 3 – Password Analyzer Backend
 - [ ] `entropy_calculator.py` – test formula
@@ -227,3 +227,7 @@ The password **never leaves the browser in plaintext**:
 | 2026-05-11 | Node as API gateway, Python for security logic | Node excels at I/O; Python has better security libraries |
 | 2026-05-11 | Vite proxy instead of CORS headers | Avoids managing CORS during development; cleaner setup |
 | 2026-05-11 | TCP-connect nmap scan (`-sT`) | No root/admin required on Windows |
+| 2026-05-11 | Feature branch per phase | Keeps master clean; one branch per phase, merged when complete |
+| 2026-05-11 | `.env.example` committed, `.env` gitignored | Documents required variables without exposing secrets |
+| 2026-05-11 | `__init__.py` in Python routers/ and services/ | Makes them proper Python packages so imports resolve correctly |
+| 2026-05-14 | Bruno over Postman for API testing | Bruno collection files are plain text and committed to git — anyone cloning the repo can test immediately |

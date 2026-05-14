@@ -1,0 +1,17 @@
+meta {
+  name: Scan Ports
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{nodeUrl}}/api/scan/ports
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "url": "{{testUrl}}"
+  }
+}
