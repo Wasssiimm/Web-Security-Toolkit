@@ -1,0 +1,21 @@
+meta {
+  name: Header Quality Analysis
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{pythonUrl}}/scan/headers
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "headers": {
+      "strict-transport-security": "max-age=60",
+      "x-frame-options": "DENY",
+      "x-content-type-options": "nosniff"
+    }
+  }
+}
