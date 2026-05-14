@@ -187,13 +187,13 @@ The password **never leaves the browser in plaintext**:
 - [x] Private IP blocker middleware in place
 - [x] CLAUDE.md created
 
-### 🔲 Phase 2 – Web Security Scanner Backend (Next)
+### ✅ Phase 2 – Web Security Scanner Backend (Complete)
 - [x] `headerService.js` – test against real URLs
 - [x] `header_analyzer.py` – risk rating per header
 - [x] `port_scanner.py` – test nmap on Windows
 - [x] `vuln_detector.py` – vulnerability logic
 - [x] Report endpoint + scoring
-- [ ] Test via Postman
+- [x] Test via Bruno
 
 ### 🔲 Phase 3 – Password Analyzer Backend
 - [ ] `entropy_calculator.py` – test formula
@@ -230,3 +230,4 @@ The password **never leaves the browser in plaintext**:
 | 2026-05-11 | Feature branch per phase | Keeps master clean; one branch per phase, merged when complete |
 | 2026-05-11 | `.env.example` committed, `.env` gitignored | Documents required variables without exposing secrets |
 | 2026-05-11 | `__init__.py` in Python routers/ and services/ | Makes them proper Python packages so imports resolve correctly |
+| 2026-05-14 | Bruno over Postman for API testing | Bruno collection files are plain text and committed to git — anyone cloning the repo can test immediately |
