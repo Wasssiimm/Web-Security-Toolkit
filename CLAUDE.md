@@ -192,7 +192,7 @@ The password **never leaves the browser in plaintext**:
 - [x] `header_analyzer.py` – risk rating per header
 - [x] `port_scanner.py` – test nmap on Windows
 - [x] `vuln_detector.py` – vulnerability logic
-- [ ] Report endpoint + scoring
+- [x] Report endpoint + scoring
 - [ ] Test via Postman
 
 ### 🔲 Phase 3 – Password Analyzer Backend
