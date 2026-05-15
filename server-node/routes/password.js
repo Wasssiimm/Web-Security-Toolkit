@@ -18,12 +18,12 @@ router.post('/analyze', async (req, res) => {
 })
 
 router.post('/breach', async (req, res) => {
-  const { hashPrefix } = req.body
-  if (!hashPrefix || typeof hashPrefix !== 'string' || hashPrefix.length !== 5) {
-    return res.status(400).json({ error: 'hashPrefix must be exactly 5 hex characters' })
+  const { hash } = req.body
+  if (!hash || typeof hash !== 'string' || !/^[a-fA-F0-9]{40}$/.test(hash)) {
+    return res.status(400).json({ error: 'hash must be a 40-character SHA-1 hex string' })
   }
   try {
-    const result = await hibpService.checkBreach(hashPrefix)
+    const result = await hibpService.checkBreach(hash)
     res.json(result)
   } catch (err) {
     res.status(500).json({ error: err.message })
