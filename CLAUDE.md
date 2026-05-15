@@ -376,9 +376,9 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] Tested via Bruno
 
 ### 🔲 Phase 3 – Password Analyzer Backend (Current branch: phase-3-password-backend)
-- [ ] `entropy_calculator.py` – entropy formula + pattern detection
-- [ ] `hibpService.js` – SHA-1 hash computation + k-anonymity HIBP call
-- [ ] Wire up `/api/password/analyze` and `/api/password/breach` routes
+- [x] `entropy_calculator.py` – entropy formula, 13 pattern types, crack time estimates, feedback/suggestions
+- [ ] Test `/api/password/analyze` chain (Node → Python) via Bruno
+- [ ] `hibpService.js` – fix breach response format (`breached`, `occurrences`, `message`)
 - [ ] End-to-end test via Bruno
 
 ### 🔲 Phase 4 – Frontend (See Frontend Design Guide above)
