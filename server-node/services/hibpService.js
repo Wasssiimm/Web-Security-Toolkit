@@ -1,20 +1,31 @@
 const axios = require('axios')
 
-async function checkBreach(hashPrefix) {
-  const upper  = hashPrefix.toUpperCase()
-  const res    = await axios.get(`https://api.pwnedpasswords.com/range/${upper}`, {
+// Accepts the full 40-char SHA-1 hash (computed client-side).
+// Only the first 5 chars are sent to HIBP — the full hash never leaves this server.
+async function checkBreach(fullHash) {
+  const upper  = fullHash.toUpperCase()
+  const prefix = upper.slice(0, 5)
+  const suffix = upper.slice(5)
+
+  const res = await axios.get(`https://api.pwnedpasswords.com/range/${prefix}`, {
     headers: { 'Add-Padding': 'true' },
     timeout: 5000
   })
 
-  // Response is "SUFFIX:COUNT\r\n" lines — caller already has full hash to compare
+  // Response is "SUFFIX:COUNT\r\n" lines
   const lines = res.data.split('\r\n').filter(Boolean)
-  const matches = lines.map(line => {
-    const [suffix, count] = line.split(':')
-    return { suffix: upper + suffix, count: parseInt(count, 10) }
-  })
+  const match = lines.find(line => line.split(':')[0] === suffix)
 
-  return { hashPrefix: upper, matches }
+  if (!match) {
+    return { breached: false, occurrences: 0, message: 'This password has not been found in any known data breaches.' }
+  }
+
+  const occurrences = parseInt(match.split(':')[1], 10)
+  return {
+    breached:    true,
+    occurrences,
+    message:     `This password has been found in ${occurrences.toLocaleString()} known data breach(es). Do not use it.`
+  }
 }
 
 module.exports = { checkBreach }
