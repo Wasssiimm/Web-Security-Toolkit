@@ -137,7 +137,7 @@ web-security-toolkit/
 | POST | `/api/scan/ports` | Forwards to Python to run an nmap scan on 10 common ports |
 | POST | `/api/scan/report` | Full scan: headers + quality + ports + vulns + score + grade |
 | POST | `/api/password/analyze` | Forwards to Python for entropy + pattern analysis |
-| POST | `/api/password/breach` | Sends 5-char SHA-1 prefix to HIBP, returns matches |
+| POST | `/api/password/breach` | Accepts full 40-char SHA-1 hash, sends only 5-char prefix to HIBP, returns `{ breached, occurrences, message }` |
 
 ### Python / FastAPI (port 8000, internal only)
 
@@ -377,7 +377,7 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 
 ### 🔲 Phase 3 – Password Analyzer Backend (Current branch: phase-3-password-backend)
 - [x] `entropy_calculator.py` – entropy formula, 13 pattern types, crack time estimates, feedback/suggestions
-- [ ] Test `/api/password/analyze` chain (Node → Python) via Bruno
+- [x] Test `/api/password/analyze` chain (Node → Python) via Bruno
 - [ ] `hibpService.js` – fix breach response format (`breached`, `occurrences`, `message`)
 - [ ] End-to-end test via Bruno
 
