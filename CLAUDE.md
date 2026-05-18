@@ -381,7 +381,7 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] `hibpService.js` – fix breach response format (`breached`, `occurrences`, `message`)
 - [x] End-to-end test via Bruno
 
-### 🔲 Phase 4 – Frontend (See Frontend Design Guide above)
+### ✅ Phase 4 – Frontend (Complete)
 - [x] Navigation layout + routing (App.jsx complete from Phase 1)
 - [x] Step 1: Fix api.js + shared components: Badge, Spinner, ErrorMessage
 - [x] Step 2: Shared ScoreCircle (Recharts radial bar)
@@ -391,8 +391,8 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] Step 6: Scanner – VulnList + ReportCard with JSON export
 - [x] Step 7: Password – PasswordForm + StrengthBar
 - [x] Step 8: Password – EntropyGauge (Recharts)
-- [ ] Step 9: Password – PatternWarnings + BreachResult
-- [ ] Loading states + error handling woven into every step above
+- [x] Step 9: Password – PatternWarnings + BreachResult
+- [x] Loading states + error handling woven into every step above
 
 ### 🔲 Phase 5 – Testing & Finalisation
 - [ ] End-to-end tests (multiple URLs and passwords)
