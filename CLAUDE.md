@@ -389,7 +389,7 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] Step 4: Scanner – HeaderResults table
 - [x] Step 5: Scanner – PortResults list
 - [x] Step 6: Scanner – VulnList + ReportCard with JSON export
-- [ ] Step 7: Password – PasswordForm + StrengthBar
+- [x] Step 7: Password – PasswordForm + StrengthBar
 - [ ] Step 8: Password – EntropyGauge (Recharts)
 - [ ] Step 9: Password – PatternWarnings + BreachResult
 - [ ] Loading states + error handling woven into every step above
