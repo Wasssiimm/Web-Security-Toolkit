@@ -382,13 +382,17 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] End-to-end test via Bruno
 
 ### 🔲 Phase 4 – Frontend (See Frontend Design Guide above)
-- [ ] Navigation layout + routing
-- [ ] Scanner: ScannerForm, HeaderResults, PortResults
-- [ ] Scanner: VulnList, ReportCard + JSON export
-- [ ] Password: PasswordForm, StrengthBar, EntropyGauge
-- [ ] Password: PatternWarnings, BreachResult
-- [ ] Shared: ScoreCircle, Badge, Spinner, ErrorMessage
-- [ ] Loading states + error handling on every API call
+- [x] Navigation layout + routing (App.jsx complete from Phase 1)
+- [x] Step 1: Fix api.js + shared components: Badge, Spinner, ErrorMessage
+- [ ] Step 2: Shared ScoreCircle (Recharts radial bar)
+- [ ] Step 3: Scanner – ScannerForm + ScannerPage with loading/error state
+- [ ] Step 4: Scanner – HeaderResults table
+- [ ] Step 5: Scanner – PortResults list
+- [ ] Step 6: Scanner – VulnList + ReportCard with JSON export
+- [ ] Step 7: Password – PasswordForm + StrengthBar
+- [ ] Step 8: Password – EntropyGauge (Recharts)
+- [ ] Step 9: Password – PatternWarnings + BreachResult
+- [ ] Loading states + error handling woven into every step above
 
 ### 🔲 Phase 5 – Testing & Finalisation
 - [ ] End-to-end tests (multiple URLs and passwords)
