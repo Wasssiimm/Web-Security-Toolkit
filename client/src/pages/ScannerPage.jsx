@@ -29,6 +29,26 @@ export default function ScannerPage() {
 
   return (
     <div className="space-y-6">
+      {/* Page intro */}
+      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 space-y-4">
+        <div>
+          <h1 className="text-xl font-bold text-gray-100">Web Security Scanner</h1>
+          <p className="text-sm text-gray-400 mt-1 leading-relaxed">
+            Analyse any public website for HTTP security headers, open ports, and known
+            vulnerability patterns. A scored report with actionable recommendations is
+            generated in seconds.
+          </p>
+        </div>
+        <div className="flex items-start gap-2.5 bg-yellow-900/20 border border-yellow-800/40 rounded-lg px-4 py-3">
+          <span className="text-yellow-500 shrink-0 mt-0.5">⚠</span>
+          <p className="text-sm text-yellow-400/90">
+            Only scan websites you own or have explicit permission to test.
+            Unauthorised port scanning may be illegal in your jurisdiction.
+            Private and local IP ranges are blocked by this tool.
+          </p>
+        </div>
+      </div>
+
       <ScannerForm onSubmit={handleScan} loading={loading} />
 
       {error && <ErrorMessage message={error} />}
