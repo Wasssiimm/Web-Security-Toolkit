@@ -1,16 +1,66 @@
+import { useState } from 'react'
+import ScannerForm from '../components/scanner/ScannerForm'
+import HeaderResults from '../components/scanner/HeaderResults'
+import ErrorMessage from '../components/shared/ErrorMessage'
 import ScoreCircle from '../components/shared/ScoreCircle'
+import { scanReport } from '../services/api'
 
 export default function ScannerPage() {
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState(null)
+  const [report,  setReport]  = useState(null)
+
+  async function handleScan(url) {
+    setLoading(true)
+    setError(null)
+    setReport(null)
+    try {
+      const { data } = await scanReport(url)
+      setReport(data)
+    } catch (err) {
+      setError(err.response?.data?.error ?? 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Web Security Scanner</h1>
-      {/* Temporary preview — remove when ScannerForm is built in Step 3 */}
-      <div className="flex gap-6">
-        <ScoreCircle score={9} grade="A" />
-        <ScoreCircle score={6} grade="B" />
-        <ScoreCircle score={4} grade="C" />
-        <ScoreCircle score={1} grade="F" />
-      </div>
+      <ScannerForm onSubmit={handleScan} loading={loading} />
+
+      {error && <ErrorMessage message={error} />}
+
+      {loading && (
+        <p className="text-sm text-gray-400 animate-pulse">
+          Scanning ports, this may take a moment…
+        </p>
+      )}
+
+      {report && (
+        <>
+          {/* Score summary — stays here permanently */}
+          <div className="flex items-center gap-6 bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <ScoreCircle score={report.totalScore} grade={report.grade} />
+            <div>
+              <p className="text-lg font-semibold text-gray-100">{report.url}</p>
+              <p className="text-sm text-gray-400 mt-1">
+                Scanned {new Date(report.generatedAt).toLocaleString()}
+              </p>
+            </div>
+          </div>
+
+          <HeaderResults
+            headers={report.headers}
+            headerScore={report.headerScore}
+            maxHeaderScore={report.maxHeaderScore}
+          />
+
+          {/* Temporary raw data preview — replaced in Steps 5-6 */}
+          <pre className="text-xs text-gray-400 bg-gray-900 border border-gray-800 rounded-lg p-4 overflow-auto max-h-96">
+            {JSON.stringify({ ports: report.ports, vulnerabilities: report.vulnerabilities }, null, 2)}
+          </pre>
+        </>
+      )}
     </div>
   )
 }

@@ -385,8 +385,8 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] Navigation layout + routing (App.jsx complete from Phase 1)
 - [x] Step 1: Fix api.js + shared components: Badge, Spinner, ErrorMessage
 - [x] Step 2: Shared ScoreCircle (Recharts radial bar)
-- [ ] Step 4: Scanner – HeaderResults table
 - [x] Step 3: Scanner – ScannerForm + ScannerPage with loading/error state
+- [x] Step 4: Scanner – HeaderResults table
 - [ ] Step 5: Scanner – PortResults list
 - [ ] Step 6: Scanner – VulnList + ReportCard with JSON export
 - [ ] Step 7: Password – PasswordForm + StrengthBar
