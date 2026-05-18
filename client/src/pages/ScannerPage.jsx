@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ScannerForm from '../components/scanner/ScannerForm'
 import HeaderResults from '../components/scanner/HeaderResults'
+import PortResults from '../components/scanner/PortResults'
 import ErrorMessage from '../components/shared/ErrorMessage'
 import ScoreCircle from '../components/shared/ScoreCircle'
 import { scanReport } from '../services/api'
@@ -55,9 +56,11 @@ export default function ScannerPage() {
             maxHeaderScore={report.maxHeaderScore}
           />
 
-          {/* Temporary raw data preview — replaced in Steps 5-6 */}
+          <PortResults host={report.host} ports={report.ports} />
+
+          {/* Temporary raw data preview — replaced in Step 6 */}
           <pre className="text-xs text-gray-400 bg-gray-900 border border-gray-800 rounded-lg p-4 overflow-auto max-h-96">
-            {JSON.stringify({ ports: report.ports, vulnerabilities: report.vulnerabilities }, null, 2)}
+            {JSON.stringify({ vulnerabilities: report.vulnerabilities }, null, 2)}
           </pre>
         </>
       )}
