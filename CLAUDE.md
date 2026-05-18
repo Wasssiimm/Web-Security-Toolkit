@@ -384,7 +384,7 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 ### 🔲 Phase 4 – Frontend (See Frontend Design Guide above)
 - [x] Navigation layout + routing (App.jsx complete from Phase 1)
 - [x] Step 1: Fix api.js + shared components: Badge, Spinner, ErrorMessage
-- [ ] Step 2: Shared ScoreCircle (Recharts radial bar)
+- [x] Step 2: Shared ScoreCircle (Recharts radial bar)
 - [ ] Step 3: Scanner – ScannerForm + ScannerPage with loading/error state
 - [ ] Step 4: Scanner – HeaderResults table
 - [ ] Step 5: Scanner – PortResults list
