@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PasswordForm from '../components/password/PasswordForm'
 import StrengthBar from '../components/password/StrengthBar'
+import EntropyGauge from '../components/password/EntropyGauge'
 import ErrorMessage from '../components/shared/ErrorMessage'
 import { analyzePassword, checkBreach } from '../services/api'
 
@@ -48,9 +49,15 @@ export default function PasswordPage() {
         <>
           <StrengthBar score={analysis.score} label={analysis.label} />
 
-          {/* Temporary raw preview — replaced in Steps 8-9 */}
+          <EntropyGauge
+            entropy={analysis.entropy}
+            effectiveEntropy={analysis.effectiveEntropy}
+            entropyLabel={analysis.entropyLabel}
+          />
+
+          {/* Temporary raw preview — replaced in Step 9 */}
           <pre className="text-xs text-gray-400 bg-gray-900 border border-gray-800 rounded-lg p-4 overflow-auto max-h-96">
-            {JSON.stringify({ analysis, breach }, null, 2)}
+            {JSON.stringify({ patterns: analysis.patterns, feedback: analysis.feedback, crackTime: analysis.crackTime, breach }, null, 2)}
           </pre>
         </>
       )}
