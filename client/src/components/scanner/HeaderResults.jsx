@@ -66,7 +66,7 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
                       <p className="text-xs text-gray-400">{data.desc}</p>
 
                       {data.value && (
-                        <p className="text-xs font-mono bg-gray-950 rounded px-3 py-2 text-green-300 break-all">
+                        <p className="text-xs font-mono bg-gray-950 rounded px-3 py-2 text-cyan-300 break-all">
                           {data.value}
                         </p>
                       )}
@@ -83,7 +83,7 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
 
                       {!data.present && data.recommendation && (
                         <p className="text-xs text-gray-400">
-                          <span className="text-green-400 mr-1">→</span>
+                          <span className="text-cyan-400 mr-1">→</span>
                           {data.recommendation}
                         </p>
                       )}

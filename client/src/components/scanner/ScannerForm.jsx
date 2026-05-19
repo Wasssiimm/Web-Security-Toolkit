@@ -19,12 +19,12 @@ export default function ScannerForm({ onSubmit, loading }) {
           placeholder="https://example.com"
           required
           disabled={loading}
-          className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-green-500 disabled:opacity-50"
+          className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={loading || !permitted}
-          className="flex items-center gap-2 bg-green-600 hover:bg-green-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-6 py-2.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-6 py-2.5 rounded-lg transition-colors"
         >
           {loading && <Spinner size="sm" />}
           {loading ? 'Scanning…' : 'Scan'}
@@ -37,7 +37,7 @@ export default function ScannerForm({ onSubmit, loading }) {
           checked={permitted}
           onChange={e => setPermitted(e.target.checked)}
           disabled={loading}
-          className="w-4 h-4 accent-green-500 cursor-pointer"
+          className="w-4 h-4 accent-cyan-500 cursor-pointer"
         />
         <span className="text-sm text-gray-400">
           I confirm I have permission to scan this target

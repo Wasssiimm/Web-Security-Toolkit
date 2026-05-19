@@ -69,7 +69,7 @@ export default function HomePage() {
       <section className="text-center space-y-6">
         <h1 className="text-4xl font-bold text-gray-100 leading-tight">
           Security analysis,{' '}
-          <span className="text-green-400">open to everyone.</span>
+          <span className="text-cyan-400">open to everyone.</span>
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
           Scan websites for vulnerabilities. Check passwords against billions of known
@@ -78,7 +78,7 @@ export default function HomePage() {
         <div className="flex justify-center gap-4 flex-wrap">
           <Link
             to="/scanner"
-            className="bg-green-600 hover:bg-green-500 text-white font-medium px-7 py-3 rounded-lg transition-colors"
+            className="bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-7 py-3 rounded-lg transition-colors"
           >
             Scan a Website →
           </Link>
@@ -95,7 +95,7 @@ export default function HomePage() {
       <section className="grid grid-cols-3 gap-4">
         {STATS.map(s => (
           <div key={s.label} className="bg-gray-900 border border-gray-800 rounded-lg p-5 text-center">
-            <p className="text-3xl font-bold text-green-400">{s.value}</p>
+            <p className="text-3xl font-bold text-cyan-400">{s.value}</p>
             <p className="text-sm text-gray-400 mt-1">{s.label}</p>
           </div>
         ))}
@@ -114,14 +114,14 @@ export default function HomePage() {
               <ul className="space-y-1.5 flex-1">
                 {f.bullets.map(b => (
                   <li key={b} className="flex items-start gap-2 text-sm text-gray-400">
-                    <span className="text-green-400 shrink-0 mt-0.5">✓</span>
+                    <span className="text-cyan-400 shrink-0 mt-0.5">✓</span>
                     {b}
                   </li>
                 ))}
               </ul>
               <Link
                 to={f.to}
-                className="inline-flex items-center text-sm text-green-400 hover:text-green-300 font-medium transition-colors mt-2"
+                className="inline-flex items-center text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-colors mt-2"
               >
                 {f.cta} →
               </Link>
@@ -142,7 +142,7 @@ export default function HomePage() {
               <ol className="space-y-4">
                 {tool.steps.map(s => (
                   <li key={s.n} className="flex gap-4">
-                    <span className="w-6 h-6 rounded-full bg-green-900/50 border border-green-800 text-green-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-6 h-6 rounded-full bg-cyan-900/50 border border-cyan-800 text-cyan-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                       {s.n}
                     </span>
                     <div>
@@ -163,7 +163,7 @@ export default function HomePage() {
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {PRIVACY.map(p => (
             <li key={p} className="flex items-start gap-2 text-sm text-gray-400">
-              <span className="text-green-400 shrink-0 mt-0.5">✓</span>
+              <span className="text-cyan-400 shrink-0 mt-0.5">✓</span>
               {p}
             </li>
           ))}

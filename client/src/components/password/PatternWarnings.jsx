@@ -47,7 +47,7 @@ export default function PatternWarnings({ patterns, feedback, crackTime }) {
         <ul className="space-y-1">
           {feedback.suggestions.map((s, i) => (
             <li key={i} className="text-sm text-gray-400 flex gap-2">
-              <span className="text-green-400 shrink-0">→</span>
+              <span className="text-cyan-400 shrink-0">→</span>
               <span>{s}</span>
             </li>
           ))}
