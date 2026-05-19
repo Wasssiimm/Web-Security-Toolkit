@@ -29,19 +29,18 @@ export default function ScannerPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page intro */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 space-y-4">
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-100">Web Security Scanner</h1>
-          <p className="text-sm text-gray-400 mt-1 leading-relaxed">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Web Security Scanner</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
             Analyse any public website for HTTP security headers, open ports, and known
             vulnerability patterns. A scored report with actionable recommendations is
             generated in seconds.
           </p>
         </div>
-        <div className="flex items-start gap-2.5 bg-yellow-900/20 border border-yellow-800/40 rounded-lg px-4 py-3">
+        <div className="flex items-start gap-2.5 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/40 rounded-lg px-4 py-3">
           <span className="text-yellow-500 shrink-0 mt-0.5">⚠</span>
-          <p className="text-sm text-yellow-400/90">
+          <p className="text-sm text-yellow-700 dark:text-yellow-400/90">
             Only scan websites you own or have explicit permission to test.
             Unauthorised port scanning may be illegal in your jurisdiction.
             Private and local IP ranges are blocked by this tool.
@@ -54,19 +53,18 @@ export default function ScannerPage() {
       {error && <ErrorMessage message={error} />}
 
       {loading && (
-        <p className="text-sm text-gray-400 animate-pulse">
+        <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
           Scanning ports, this may take a moment…
         </p>
       )}
 
       {report && (
         <>
-          {/* Score summary — stays here permanently */}
-          <div className="flex items-center gap-6 bg-gray-900 border border-gray-800 rounded-lg p-6">
+          <div className="flex items-center gap-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
             <ScoreCircle score={report.totalScore} grade={report.grade} />
             <div>
-              <p className="text-lg font-semibold text-gray-100">{report.url}</p>
-              <p className="text-sm text-gray-400 mt-1">
+              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{report.url}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Scanned {new Date(report.generatedAt).toLocaleString()}
               </p>
             </div>
