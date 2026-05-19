@@ -19,7 +19,7 @@ export default function ScannerForm({ onSubmit, loading }) {
           placeholder="https://example.com"
           required
           disabled={loading}
-          className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+          className="flex-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
         />
         <button
           type="submit"
@@ -39,7 +39,7 @@ export default function ScannerForm({ onSubmit, loading }) {
           disabled={loading}
           className="w-4 h-4 accent-cyan-500 cursor-pointer"
         />
-        <span className="text-sm text-gray-400">
+        <span className="text-sm text-gray-500 dark:text-gray-400">
           I confirm I have permission to scan this target
         </span>
       </label>

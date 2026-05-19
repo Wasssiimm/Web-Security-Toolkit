@@ -43,13 +43,12 @@ export default function PasswordPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page intro */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 space-y-2">
-        <h1 className="text-xl font-bold text-gray-100">Password Strength Analyser</h1>
-        <p className="text-sm text-gray-400 leading-relaxed">
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 space-y-2">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Password Strength Analyser</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
           Check any password for entropy, weak patterns, and known data breaches.
           Analysis runs on your own server instance — your password is never stored.
-          Breach checks use <span className="text-gray-300">k-anonymity</span>: only
+          Breach checks use <span className="text-gray-700 dark:text-gray-300">k-anonymity</span>: only
           the first 5 characters of a SHA-1 hash are sent to Have I Been Pwned, so
           your full password never leaves your browser.
         </p>

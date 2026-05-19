@@ -7,9 +7,9 @@ export default function VulnList({ vulnerabilities }) {
 
   if (vulnerabilities.length === 0) {
     return (
-      <div className="bg-gray-900 border border-gray-800 rounded-lg px-5 py-6 text-center">
-        <p className="text-cyan-400 font-medium">No vulnerabilities detected</p>
-        <p className="text-sm text-gray-400 mt-1">The scanned target passed all checks.</p>
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-5 py-6 text-center">
+        <p className="text-cyan-500 dark:text-cyan-400 font-medium">No vulnerabilities detected</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">The scanned target passed all checks.</p>
       </div>
     )
   }
@@ -19,23 +19,23 @@ export default function VulnList({ vulnerabilities }) {
   )
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-100">Vulnerabilities</h2>
-        <span className="text-sm text-gray-400">{vulnerabilities.length} found</span>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+      <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+        <h2 className="font-semibold text-gray-900 dark:text-gray-100">Vulnerabilities</h2>
+        <span className="text-sm text-gray-500 dark:text-gray-400">{vulnerabilities.length} found</span>
       </div>
 
-      <div className="divide-y divide-gray-800">
+      <div className="divide-y divide-gray-100 dark:divide-gray-800">
         {sorted.map(v => (
           <div key={v.id} className="px-5 py-4 flex gap-4">
             <div className="pt-0.5 shrink-0">
               <Badge severity={v.severity}>{v.severity}</Badge>
             </div>
             <div className="space-y-1.5 min-w-0">
-              <p className="text-sm font-semibold text-gray-100">{v.title}</p>
-              <p className="text-sm text-gray-400">{v.description}</p>
-              <p className="text-sm text-gray-400 pl-3 border-l border-gray-700">
-                <span className="text-cyan-400 mr-1">→</span>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{v.title}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{v.description}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 pl-3 border-l border-gray-200 dark:border-gray-700">
+                <span className="text-cyan-500 dark:text-cyan-400 mr-1">→</span>
                 {v.recommendation}
               </p>
             </div>
