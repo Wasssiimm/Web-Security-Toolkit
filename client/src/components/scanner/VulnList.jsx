@@ -8,7 +8,7 @@ export default function VulnList({ vulnerabilities }) {
   if (vulnerabilities.length === 0) {
     return (
       <div className="bg-gray-900 border border-gray-800 rounded-lg px-5 py-6 text-center">
-        <p className="text-green-400 font-medium">No vulnerabilities detected</p>
+        <p className="text-cyan-400 font-medium">No vulnerabilities detected</p>
         <p className="text-sm text-gray-400 mt-1">The scanned target passed all checks.</p>
       </div>
     )
@@ -35,7 +35,7 @@ export default function VulnList({ vulnerabilities }) {
               <p className="text-sm font-semibold text-gray-100">{v.title}</p>
               <p className="text-sm text-gray-400">{v.description}</p>
               <p className="text-sm text-gray-400 pl-3 border-l border-gray-700">
-                <span className="text-green-400 mr-1">→</span>
+                <span className="text-cyan-400 mr-1">→</span>
                 {v.recommendation}
               </p>
             </div>

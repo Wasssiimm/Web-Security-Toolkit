@@ -8,9 +8,9 @@ export default function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-gray-950 text-gray-100">
         <nav className="bg-gray-900 border-b border-gray-800">
-          <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="px-6 py-4 flex items-center justify-between">
             <div>
-              <span className="font-bold text-green-400 text-lg tracking-tight">
+              <span className="font-bold text-cyan-400 text-lg tracking-tight">
                 Web Security Toolkit
               </span>
               <p className="text-xs text-gray-500 mt-0.5">
@@ -22,7 +22,7 @@ export default function App() {
                 to="/"
                 end
                 className={({ isActive }) =>
-                  isActive ? 'text-green-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
+                  isActive ? 'text-cyan-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
                 }
               >
                 Home
@@ -30,7 +30,7 @@ export default function App() {
               <NavLink
                 to="/scanner"
                 className={({ isActive }) =>
-                  isActive ? 'text-green-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
+                  isActive ? 'text-cyan-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
                 }
               >
                 Scanner
@@ -38,7 +38,7 @@ export default function App() {
               <NavLink
                 to="/password"
                 className={({ isActive }) =>
-                  isActive ? 'text-green-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
+                  isActive ? 'text-cyan-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
                 }
               >
                 Password Analyser
@@ -47,7 +47,7 @@ export default function App() {
           </div>
         </nav>
 
-        <main className="max-w-4xl mx-auto p-6">
+        <main className="p-6">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/scanner" element={<ScannerPage />} />
