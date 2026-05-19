@@ -382,6 +382,8 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] End-to-end test via Bruno
 
 ### ✅ Phase 4 – Frontend (Complete)
+- [x] Homepage with hero, stats, feature cards, how it works, privacy section
+- [x] Routes: / = home, /scanner = scanner, /password = password
 - [x] Navigation layout + routing (App.jsx complete from Phase 1)
 - [x] Step 1: Fix api.js + shared components: Badge, Spinner, ErrorMessage
 - [x] Step 2: Shared ScoreCircle (Recharts radial bar)

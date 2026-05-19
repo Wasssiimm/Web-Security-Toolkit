@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 import ScannerPage from './pages/ScannerPage'
 import PasswordPage from './pages/PasswordPage'
 
@@ -24,6 +25,14 @@ export default function App() {
                   isActive ? 'text-green-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
                 }
               >
+                Home
+              </NavLink>
+              <NavLink
+                to="/scanner"
+                className={({ isActive }) =>
+                  isActive ? 'text-green-400 text-sm font-medium' : 'text-gray-400 hover:text-white text-sm transition-colors'
+                }
+              >
                 Scanner
               </NavLink>
               <NavLink
@@ -40,7 +49,8 @@ export default function App() {
 
         <main className="max-w-4xl mx-auto p-6">
           <Routes>
-            <Route path="/" element={<ScannerPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/scanner" element={<ScannerPage />} />
             <Route path="/password" element={<PasswordPage />} />
           </Routes>
         </main>
