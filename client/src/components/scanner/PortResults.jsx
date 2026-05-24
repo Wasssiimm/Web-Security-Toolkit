@@ -12,16 +12,21 @@ export default function PortResults({ host, ports }) {
   const openCount = ports.filter(p => p.state === 'open').length
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+    <div className="panel overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-200 dark:border-white/5 flex items-center justify-between">
         <div>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100">Port Scan</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{host}</p>
+          <h2 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+            <span className="text-cyan-500 dark:text-cyan-400 font-mono-cyber">▸</span>
+            Port Scan
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5 font-mono-cyber">{host}</p>
         </div>
-        <span className="text-sm text-gray-500 dark:text-gray-400">{openCount} open</span>
+        <span className="text-xs font-mono-cyber text-emerald-600 dark:text-emerald-400 px-2 py-1 border border-emerald-300/40 dark:border-emerald-400/30 rounded">
+          {openCount} OPEN
+        </span>
       </div>
 
-      <div className="divide-y divide-gray-100 dark:divide-gray-800">
+      <div className="divide-y divide-slate-100 dark:divide-white/5">
         {ports.map(p => {
           const isOpen = p.state === 'open'
           return (

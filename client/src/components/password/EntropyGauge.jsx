@@ -18,8 +18,10 @@ export default function EntropyGauge({ entropy, effectiveEntropy, entropyLabel }
   const trackFill = dark ? '#1f2937' : '#e5e7eb'
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-5">
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Entropy</h3>
+    <div className="panel panel-fuchsia p-5">
+      <h3 className="text-xs font-mono-cyber font-semibold text-fuchsia-600 dark:text-fuchsia-400 uppercase tracking-wider mb-4">
+        &gt; Entropy
+      </h3>
 
       <div className="flex items-center gap-6">
         <div className="relative w-28 h-28 shrink-0">

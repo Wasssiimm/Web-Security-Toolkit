@@ -23,7 +23,7 @@ A full-stack monorepo built as a POA (Personal Development Activity) for a 2nd-y
 Browser (React)
     │  HTTP REST (JSON)
     ▼
-Node.js / Express  ← API gateway, port 3000
+Node.js / Express  ← API gateway, port 3001
     │  internal HTTP
     ├──► Python / FastAPI  ← security engine, port 8000
     └──► HIBP API          ← external, k-anonymity breach check
@@ -35,7 +35,7 @@ Node.js / Express  ← API gateway, port 3000
 - This mirrors real-world microservice patterns — each service does one thing.
 
 ### Why a proxy in vite.config.js?
-The React dev server runs on port 5173. Without a proxy, browser requests to `/api/...` would fail due to CORS. The proxy forwards them to Node on port 3000, so the frontend never has to hardcode a backend URL.
+The React dev server runs on port 5173. Without a proxy, browser requests to `/api/...` would fail due to CORS. The proxy forwards them to Node on port 3001, so the frontend never has to hardcode a backend URL.
 
 ---
 
@@ -129,7 +129,7 @@ web-security-toolkit/
 
 ## API Endpoints Reference
 
-### Node.js (port 3000)
+### Node.js (port 3001)
 
 | Method | Endpoint | What it does |
 |---|---|---|
@@ -409,7 +409,7 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [ ] Provision a VPS (DigitalOcean / Hetzner / Linode — ~€5/month)
 - [ ] Install Node.js 20, Python 3.12, nmap on the server
 - [ ] Build React: `npm run build` → static files in `client/dist/`
-- [ ] Configure Nginx: serve React static files + reverse proxy `/api` to Node on port 3000
+- [ ] Configure Nginx: serve React static files + reverse proxy `/api` to Node on port 3001
 - [ ] Deploy Node API with PM2 (keeps process alive, auto-restarts on crash)
 - [ ] Deploy Python engine with systemd (same as PM2 but for Python)
 - [ ] SSL certificate via Let's Encrypt / Certbot (free HTTPS)
