@@ -17,15 +17,20 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
   if (!headers) return null
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-900 dark:text-gray-100">Security Headers</h2>
-        <span className="text-sm text-gray-500 dark:text-gray-400">{headerScore}/{maxHeaderScore} present</span>
+    <div className="panel overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-200 dark:border-white/5 flex items-center justify-between">
+        <h2 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+          <span className="text-cyan-500 dark:text-cyan-400 font-mono-cyber">▸</span>
+          Security Headers
+        </h2>
+        <span className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 px-2 py-1 border border-cyan-300/40 dark:border-cyan-400/30 rounded">
+          {headerScore} / {maxHeaderScore} PRESENT
+        </span>
       </div>
 
       <table className="w-full">
         <thead>
-          <tr className="text-left text-xs text-gray-400 dark:text-gray-500 uppercase border-b border-gray-200 dark:border-gray-800">
+          <tr className="text-left text-xs font-mono-cyber text-slate-400 dark:text-slate-500 uppercase border-b border-slate-200 dark:border-white/5">
             <th className="px-5 py-3 font-medium">Header</th>
             <th className="px-5 py-3 font-medium">Status</th>
             <th className="px-5 py-3 font-medium">Quality</th>

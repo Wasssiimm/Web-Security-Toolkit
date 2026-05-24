@@ -17,8 +17,10 @@ export default function PatternWarnings({ patterns, feedback, crackTime }) {
   if (!patterns) return null
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-5 space-y-4">
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Pattern Analysis</h3>
+    <div className="panel panel-fuchsia p-5 space-y-4">
+      <h3 className="text-xs font-mono-cyber font-semibold text-fuchsia-600 dark:text-fuchsia-400 uppercase tracking-wider">
+        &gt; Pattern Analysis
+      </h3>
 
       {patterns.length === 0 ? (
         <p className="text-sm text-green-600 dark:text-green-400">✓ No weak patterns detected</p>

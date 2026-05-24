@@ -2,10 +2,10 @@ export default function BreachResult({ breach }) {
   if (!breach) return null
 
   return (
-    <div className={`rounded-lg border p-5 space-y-3 ${
+    <div className={`relative rounded-md border p-5 space-y-3 backdrop-blur-sm ${
       breach.breached
-        ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-        : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+        ? 'bg-red-50/70 dark:bg-red-500/10 border-red-300/60 dark:border-red-400/30 shadow-[0_0_30px_-10px_rgba(239,68,68,0.5)]'
+        : 'bg-emerald-50/70 dark:bg-emerald-500/10 border-emerald-300/60 dark:border-emerald-400/30 shadow-[0_0_30px_-10px_rgba(52,211,153,0.5)]'
     }`}>
       <div className="flex items-center gap-3">
         <span className="text-2xl">{breach.breached ? '✕' : '✓'}</span>
