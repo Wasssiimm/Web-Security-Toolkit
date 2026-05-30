@@ -71,6 +71,29 @@ const TICKER = [
   'Quantum-safe TLS: NIST PQC finalized',
   'SSH brute force +220% YoY',
   'Heartbleed still alive on 0.3% of hosts',
+  'CVE-2024-21762 ▸ Fortinet auth bypass — CVSS 9.8',
+  'Ransomware payments hit $1.1B in 2023',
+  '43% of breaches involve web applications — Verizon DBIR',
+  'CVE-2024-1709 ▸ ConnectWise ScreenConnect RCE',
+  'Log4Shell still exploited on 30% of vulnerable hosts',
+  'Default passwords account for 21% of compromised devices',
+  'CVE-2023-44487 ▸ HTTP/2 Rapid Reset DDoS',
+  '94% of malware delivered via email',
+  'Supply chain attacks up 633% since 2021',
+  'CVE-2024-27198 ▸ JetBrains TeamCity auth bypass',
+  'Average time to detect a breach: 194 days',
+  'Only 5% of company folders properly protected on average',
+  'CVE-2024-6387 ▸ OpenSSH regreSSHion RCE',
+  'Phishing accounts for 36% of all data breaches',
+  'Zero-day exploits sold for up to $2.5M on grey markets',
+  'CVE-2024-23897 ▸ Jenkins arbitrary file read',
+  'MFA blocks 99.9% of automated account attacks — Microsoft',
+  '3.4B phishing emails sent daily worldwide',
+  'CVE-2023-4966 ▸ Citrix Bleed session token leak',
+  'Password reuse found in 65% of credential stuffing attacks',
+  'API attacks grew 137% in 2024',
+  'CVE-2024-49138 ▸ Windows CLFS driver privilege escalation',
+  'X.509 certificate misissuance incidents up 40% in 2024',
 ]
 
 const HOW_IT_WORKS = [
@@ -137,7 +160,7 @@ function TerminalMock() {
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
         </div>
         <span className="text-[10px] text-slate-400 dark:text-slate-500 tracking-widest">
-          websec://scan/--live
+          crucex://scan/--live
         </span>
         <span className="text-[10px] text-emerald-500 dark:text-emerald-400 flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-glow" /> LIVE
@@ -147,7 +170,7 @@ function TerminalMock() {
       <div className="p-5 space-y-1 text-slate-700 dark:text-slate-300 relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-cyan-400/10 to-transparent animate-scan pointer-events-none" />
 
-        <p><span className="text-emerald-500 dark:text-emerald-400">$</span> <span className="text-cyan-600 dark:text-cyan-300">websec</span> scan https://target.example</p>
+        <p><span className="text-emerald-500 dark:text-emerald-400">$</span> <span className="text-cyan-600 dark:text-cyan-300">crucex</span> scan https://target.example</p>
         <p className="text-slate-500 dark:text-slate-500">→ resolving DNS ............ <span className="text-emerald-500 dark:text-emerald-400">93.184.216.34</span></p>
         <p className="text-slate-500 dark:text-slate-500">→ probing headers (8/8) ..... <span className="text-emerald-500 dark:text-emerald-400">OK</span></p>
         <p className="text-slate-500 dark:text-slate-500">→ scanning ports (10/10) .... <span className="text-emerald-500 dark:text-emerald-400">OK</span></p>
