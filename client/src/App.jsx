@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import { ThemeProvider, useTheme } from './context/ThemeContext'
 import AnimatedBackground from './components/shared/AnimatedBackground'
 import Footer from './components/shared/Footer'
+import CorvexLogo from './components/shared/CorvexLogo'
 import HomePage from './pages/HomePage'
 import ScannerPage from './pages/ScannerPage'
 import PasswordPage from './pages/PasswordPage'
@@ -23,23 +24,12 @@ function ThemeToggle() {
 function Brand() {
   return (
     <NavLink to="/" className="flex items-center gap-3 group">
-      <div className="relative">
-        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-cyan-400 via-cyan-500 to-fuchsia-500 flex items-center justify-center text-slate-900 font-bold shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-500/60 transition-shadow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
-            <path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" strokeLinejoin="round" />
-            <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-slate-950 animate-pulse-glow" />
+      <div className="w-14 h-14 rounded-md bg-slate-900 dark:bg-slate-950 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/50 transition-shadow border border-white/5">
+        <CorvexLogo size={44} />
       </div>
-      <div className="leading-tight">
-        <p className="font-bold text-slate-900 dark:text-white tracking-tight">
-          WebSec<span className="text-cyan-500 dark:text-cyan-400">/</span>Toolkit
-        </p>
-        <p className="text-[10px] font-mono-cyber text-slate-500 dark:text-slate-500 tracking-wider uppercase">
-          v2.4.1 // operational
-        </p>
-      </div>
+      <p className="text-lg font-orbitron font-bold tracking-wider text-slate-900 dark:text-white">
+        CRUCEX
+      </p>
     </NavLink>
   )
 }

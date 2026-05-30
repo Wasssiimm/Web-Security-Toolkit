@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import CorvexLogo from './CorvexLogo'
 
 const COLS = [
   {
@@ -6,27 +7,12 @@ const COLS = [
     links: [
       { label: 'Web Security Scanner', to: '/scanner' },
       { label: 'Password Analyser', to: '/password' },
-      { label: 'Threat Database', href: '#' },
-      { label: 'CVE Lookup', href: '#' },
     ],
   },
   {
     title: 'Resources',
     links: [
-      { label: 'Documentation', href: '#' },
-      { label: 'API Reference', href: '#' },
       { label: 'FAQ', href: '#faq' },
-      { label: 'Changelog', href: '#' },
-      { label: 'Blog', href: '#' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About', href: '#' },
-      { label: 'Responsible Disclosure', href: '#' },
-      { label: 'Status Page', href: '#' },
-      { label: 'Open-Source', href: '#' },
     ],
   },
 ]
@@ -43,19 +29,15 @@ export default function Footer() {
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-6 pt-14 pb-6">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="relative">
-                <div className="w-9 h-9 rounded-md bg-gradient-to-br from-cyan-400 to-fuchsia-500 flex items-center justify-center text-slate-900 font-bold text-sm shadow-lg shadow-cyan-500/30">
-                  WS
-                </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-slate-950 animate-pulse-glow" />
+              <div className="w-9 h-9 rounded-md bg-slate-900 dark:bg-slate-950 flex items-center justify-center shadow-lg shadow-cyan-500/20 border border-white/5">
+                <CorvexLogo size={26} />
               </div>
               <div>
-                <p className="font-bold text-slate-900 dark:text-white tracking-tight">Web Security Toolkit</p>
-                <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400">// open • free • verifiable</p>
+                <p className="font-orbitron font-bold tracking-wider text-slate-900 dark:text-white">CRUCEX</p>
               </div>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
@@ -120,29 +102,19 @@ export default function Footer() {
             </span>
             <span className="text-slate-300 dark:text-slate-700">|</span>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              Found a vulnerability? Reach out at{' '}
-              <a href="mailto:security@websec.example" className="text-cyan-600 dark:text-cyan-400 hover:underline font-mono-cyber">
-                security@websec.example
+              Questions or feedback? Reach out at{' '}
+              <a href="mailto:contact@crucex.dev" className="text-cyan-600 dark:text-cyan-400 hover:underline font-mono-cyber">
+                contact@crucex.dev
               </a>
             </p>
-          </div>
-          <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-500 font-mono-cyber">
-            <span>PGP: 0xA3F7 9B12 4C5E</span>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500">
+        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/5 flex items-center justify-center text-xs text-slate-500 dark:text-slate-500">
           <p className="font-mono-cyber">
-            © {new Date().getFullYear()} Web Security Toolkit &nbsp;·&nbsp; Built for the curious.
+            © {new Date().getFullYear()} Scrutex &nbsp;·&nbsp; Built for the curious.
           </p>
-          <div className="flex items-center gap-5">
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Cookies</a>
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Acceptable Use</a>
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Legal</a>
-          </div>
         </div>
       </div>
     </footer>
