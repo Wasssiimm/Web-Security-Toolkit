@@ -51,9 +51,9 @@ export default function ScannerPage() {
           </div>
         </div>
 
-        <div className="flex items-start gap-3 bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-300/60 dark:border-yellow-400/30 rounded-md px-4 py-3">
-          <span className="text-yellow-500 shrink-0 mt-0.5">⚠</span>
-          <p className="text-sm text-yellow-800 dark:text-yellow-200/90">
+        <div className="flex items-start gap-3 bg-yellow-50 dark:bg-yellow-400/10 border border-yellow-300 dark:border-yellow-400/50 rounded-md px-4 py-3">
+          <span className="text-yellow-600 dark:text-yellow-300 shrink-0 mt-0.5">⚠</span>
+          <p className="text-sm text-yellow-900 dark:text-yellow-100">
             <span className="font-mono-cyber font-semibold">AUTHORISATION REQUIRED:</span>{' '}
             Only scan websites you own or have explicit permission to test.
             Unauthorised port scanning may be illegal in your jurisdiction.
