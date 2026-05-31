@@ -1,8 +1,8 @@
 export default function CorvexLogo({ size = 40, className = '' }) {
   return (
     <img
-      src="/corvex.png"
-      alt="Corvex Logo"
+      src="/crucexv3.png"
+      alt="Crucex"
       width={size}
       height={size}
       className={className}

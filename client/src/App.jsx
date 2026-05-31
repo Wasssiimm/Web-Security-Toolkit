@@ -42,10 +42,8 @@ function ThemeToggle() {
 function Brand() {
   return (
     <NavLink to="/" className="flex items-center gap-2.5 group">
-      <div className="w-7 h-7 rounded bg-lime-400 flex items-center justify-center shrink-0">
-        <span className="text-[#090909] font-bold text-[10px] font-mono-cyber leading-none">CX</span>
-      </div>
-      <span className="text-sm font-semibold tracking-wide text-gray-900 dark:text-[#f2f2f2] group-hover:text-lime-700 dark:group-hover:text-lime-400 transition-colors">
+      <img src="/crucexv3.png" alt="Crucex Logo" width={36} height={36} className="w-9 h-9 rounded object-contain" />
+      <span className="text-base font-bold tracking-wide text-gray-900 dark:text-[#f2f2f2] group-hover:text-lime-700 dark:group-hover:text-lime-400 transition-colors">
         CRUCEX
       </span>
     </NavLink>
