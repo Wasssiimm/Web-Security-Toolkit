@@ -5,11 +5,11 @@ const LAST_UPDATED = 'May 2026'
 function Section({ num, title, children }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-semibold text-slate-900 dark:text-white flex items-baseline gap-3">
-        <span className="font-mono-cyber text-xs text-cyan-600 dark:text-cyan-400 shrink-0">{num}</span>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f2f2f2] flex items-baseline gap-3">
+        <span className="font-mono-cyber text-xs text-lime-700 dark:text-lime-400 shrink-0">{num}</span>
         {title}
       </h2>
-      <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed space-y-2 pl-7">
+      <div className="text-sm text-gray-600 dark:text-[#888] leading-relaxed space-y-2 pl-7">
         {children}
       </div>
     </section>
@@ -30,11 +30,11 @@ export default function PrivacyPage() {
 
       {/* Header */}
       <div className="space-y-3">
-        <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase">
-          &gt; Legal / Privacy
+        <p className="text-xs font-mono-cyber text-lime-700 dark:text-lime-400 tracking-widest uppercase">
+          Legal / Privacy
         </p>
-        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Privacy Policy</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 font-mono-cyber">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-[#f2f2f2]">Privacy Policy</h1>
+        <p className="text-sm text-gray-600 dark:text-[#888] font-mono-cyber">
           Last updated: {LAST_UPDATED}
         </p>
         <div className="h-px bg-gradient-to-r from-cyan-400/50 via-fuchsia-500/30 to-transparent" />
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
 
       {/* TL;DR strip */}
       <div className="panel p-5 flex flex-wrap gap-2 items-center">
-        <span className="text-xs font-mono-cyber text-slate-500 dark:text-slate-400 mr-2">TL;DR —</span>
+        <span className="text-xs font-mono-cyber text-gray-600 dark:text-[#888] mr-2">TL;DR -</span>
         <PrivacyBadge>No personal data collected</PrivacyBadge>
         <PrivacyBadge>No cookies</PrivacyBadge>
         <PrivacyBadge>No analytics</PrivacyBadge>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
 
       <div className="panel p-8 space-y-8">
 
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-gray-600 dark:text-[#888] leading-relaxed">
           Crucex is designed from the ground up with privacy as a non-negotiable. This policy
           explains exactly what data is (and is not) collected when you use the Service.
         </p>
@@ -72,10 +72,10 @@ export default function PrivacyPage() {
           </p>
         </Section>
 
-        <Section num="02" title="Password Analysis — How Your Password Stays Private">
+        <Section num="02" title="Password Analysis - How Your Password Stays Private">
           <p>
             When you submit a password to the Password Analyser, the following happens entirely
-            on your device or your local server instance — never on any third-party server:
+            on your device or your local server instance - never on any third-party server:
           </p>
           <ol className="list-decimal list-inside space-y-1.5 mt-2">
             <li>Your password is hashed using SHA-1 directly in your browser using the Web Crypto API.</li>
@@ -86,9 +86,9 @@ export default function PrivacyPage() {
           </ol>
           <p className="mt-2">
             This technique is called{' '}
-            <strong className="text-slate-700 dark:text-slate-300">k-anonymity</strong>.
+            <strong className="text-gray-700 dark:text-[#ccc]">k-anonymity</strong>.
             It means the breach database learns only a 5-character hash prefix, which matches
-            thousands of other hashes — it cannot determine which specific password you checked.
+            thousands of other hashes - it cannot determine which specific password you checked.
           </p>
           <p>
             Entropy analysis and pattern detection run entirely server-side on your own instance
@@ -96,20 +96,20 @@ export default function PrivacyPage() {
           </p>
         </Section>
 
-        <Section num="03" title="Web Security Scanner — What Happens to Your Scan">
+        <Section num="03" title="Web Security Scanner - What Happens to Your Scan">
           <p>
             When you submit a URL for scanning, the service performs live HTTP requests and TCP
-            port probes against that target. The results — headers, open ports, vulnerability
-            findings, and scores — are returned to your browser session only.
+            port probes against that target. The results - headers, open ports, vulnerability
+            findings, and scores - are returned to your browser session only.
           </p>
           <p>
-            Scan results are <strong className="text-slate-700 dark:text-slate-300">not stored</strong> on any
+            Scan results are <strong className="text-gray-700 dark:text-[#ccc]">not stored</strong> on any
             server. They exist only in your active browser session. When you close the tab or
             navigate away, the results are gone. Use the JSON export button if you wish to keep
             a copy.
           </p>
           <p>
-            The service blocks scans against private IP ranges (10.x.x.x, 172.16–31.x.x,
+            The service blocks scans against private IP ranges (10.x.x.x, 172.16-31.x.x,
             192.168.x.x, localhost) to prevent misuse against internal infrastructure.
           </p>
         </Section>
@@ -134,11 +134,11 @@ export default function PrivacyPage() {
           <p>
             The only external service Crucex communicates with is the{' '}
             <a href="https://haveibeenpwned.com" target="_blank" rel="noopener noreferrer"
-               className="text-cyan-600 dark:text-cyan-400 hover:underline">Have I Been Pwned API</a>{' '}
+               className="text-lime-700 dark:text-lime-400 hover:underline">Have I Been Pwned API</a>{' '}
             (via your local server instance), and only for the k-anonymity breach prefix lookup
             described in Section 02. HIBP's own{' '}
             <a href="https://haveibeenpwned.com/Privacy" target="_blank" rel="noopener noreferrer"
-               className="text-cyan-600 dark:text-cyan-400 hover:underline">privacy policy</a>{' '}
+               className="text-lime-700 dark:text-lime-400 hover:underline">privacy policy</a>{' '}
             applies to that interaction.
           </p>
           <p>
@@ -166,7 +166,7 @@ export default function PrivacyPage() {
         <Section num="09" title="Contact">
           <p>
             Questions or concerns about privacy?{' '}
-            <a href="mailto:contact@crucex.dev" className="text-cyan-600 dark:text-cyan-400 hover:underline font-mono-cyber">
+            <a href="mailto:contact@crucex.dev" className="text-lime-700 dark:text-lime-400 hover:underline font-mono-cyber">
               contact@crucex.dev
             </a>
           </p>
@@ -174,10 +174,11 @@ export default function PrivacyPage() {
 
       </div>
 
-      <div className="flex gap-4 text-xs font-mono-cyber text-slate-400">
-        <Link to="/terms"      className="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Terms of Service →</Link>
-        <Link to="/disclaimer" className="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Disclaimer →</Link>
+      <div className="flex gap-4 text-xs font-mono-cyber text-gray-500 dark:text-[#555]">
+        <Link to="/terms"      className="hover:text-lime-700 dark:hover:text-lime-400 transition-colors">Terms of Service →</Link>
+        <Link to="/disclaimer" className="hover:text-lime-700 dark:hover:text-lime-400 transition-colors">Disclaimer →</Link>
       </div>
     </div>
   )
 }
+

@@ -1,17 +1,12 @@
 export default function Panel({
   children,
   className = '',
-  accent = 'cyan',
+  accent,
   hover = false,
   as: Tag = 'div',
 }) {
-  const accentClass =
-    accent === 'fuchsia' ? 'panel-fuchsia'
-    : accent === 'emerald' ? 'panel-emerald'
-    : ''
-
   return (
-    <Tag className={`panel ${accentClass} ${hover ? 'panel-glow' : ''} ${className}`}>
+    <Tag className={`panel ${hover ? 'panel-hover' : ''} ${className}`}>
       {children}
     </Tag>
   )

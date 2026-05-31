@@ -18,19 +18,19 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
 
   return (
     <div className="panel overflow-hidden">
-      <div className="px-5 py-4 border-b border-slate-200 dark:border-white/5 flex items-center justify-between">
-        <h2 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-          <span className="text-cyan-500 dark:text-cyan-400 font-mono-cyber">▸</span>
+      <div className="px-5 py-4 border-b border-gray-100 dark:border-[#1e1e1e] flex items-center justify-between">
+        <h2 className="font-semibold text-gray-900 dark:text-[#f2f2f2] flex items-center gap-2">
+          <span className="text-lime-500 dark:text-lime-400 font-mono-cyber">+</span>
           Security Headers
         </h2>
-        <span className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 px-2 py-1 border border-cyan-300/40 dark:border-cyan-400/30 rounded">
-          {headerScore} / {maxHeaderScore} PRESENT
+        <span className="text-xs font-mono-cyber text-lime-700 dark:text-lime-500 px-2 py-1 border border-lime-200 dark:border-lime-800/50 rounded bg-lime-50 dark:bg-lime-400/8">
+          {headerScore} / {maxHeaderScore}
         </span>
       </div>
 
       <table className="w-full">
         <thead>
-          <tr className="text-left text-xs font-mono-cyber text-slate-400 dark:text-slate-500 uppercase border-b border-slate-200 dark:border-white/5">
+          <tr className="text-left text-xs font-mono-cyber text-gray-500 dark:text-[#555] uppercase border-b border-gray-100 dark:border-[#1e1e1e]">
             <th className="px-5 py-3 font-medium">Header</th>
             <th className="px-5 py-3 font-medium">Status</th>
             <th className="px-5 py-3 font-medium">Quality</th>
@@ -43,11 +43,11 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
               <Fragment key={key}>
                 <tr
                   onClick={() => setExpanded(isOpen ? null : key)}
-                  className="border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                  className="border-b border-gray-50 dark:border-[#161616] cursor-pointer hover:bg-gray-50 dark:hover:bg-[#161616] transition-colors"
                 >
-                  <td className="px-5 py-3 text-sm font-mono text-gray-700 dark:text-gray-200">
+                  <td className="px-5 py-3 text-sm font-mono-cyber text-gray-700 dark:text-[#ccc]">
                     {formatKey(key)}
-                    <span className="ml-2 text-gray-400 dark:text-gray-600 text-xs">{isOpen ? '▲' : '▼'}</span>
+                    <span className="ml-2 text-gray-300 dark:text-[#333] text-xs">{isOpen ? '▲' : '▼'}</span>
                   </td>
                   <td className="px-5 py-3">
                     {data.present
@@ -60,18 +60,18 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
                           {data.quality}
                         </Badge>
                       : data.recommendation
-                        ? <span className="text-xs text-gray-400 dark:text-gray-500">→ {data.recommendation}</span>
-                        : <span className="text-gray-300 dark:text-gray-600">—</span>}
+                        ? <span className="text-xs text-gray-500 dark:text-[#555]">+ {data.recommendation}</span>
+                        : <span className="text-gray-300 dark:text-[#2a2a2a]">-</span>}
                   </td>
                 </tr>
 
                 {isOpen && (
-                  <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30">
+                  <tr className="border-b border-gray-50 dark:border-[#161616] bg-gray-50 dark:bg-[#0d0d0d]">
                     <td colSpan={3} className="px-5 py-4 space-y-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{data.desc}</p>
+                      <p className="text-xs text-gray-600 dark:text-[#888]">{data.desc}</p>
 
                       {data.value && (
-                        <p className="text-xs font-mono bg-gray-100 dark:bg-gray-950 rounded px-3 py-2 text-cyan-600 dark:text-cyan-300 break-all">
+                        <p className="text-xs font-mono-cyber bg-gray-100 dark:bg-[#090909] border border-gray-200 dark:border-[#1e1e1e] rounded px-3 py-2 text-lime-700 dark:text-lime-400 break-all">
                           {data.value}
                         </p>
                       )}
@@ -80,15 +80,15 @@ export default function HeaderResults({ headers, headerScore, maxHeaderScore }) 
                         <ul className="space-y-1">
                           {data.issues.map((issue, i) => (
                             <li key={i} className="text-xs text-yellow-600 dark:text-yellow-400 flex gap-2">
-                              <span>⚠</span><span>{issue}</span>
+                              <span>!</span><span>{issue}</span>
                             </li>
                           ))}
                         </ul>
                       )}
 
                       {!data.present && data.recommendation && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          <span className="text-cyan-500 dark:text-cyan-400 mr-1">→</span>
+                        <p className="text-xs text-gray-600 dark:text-[#888]">
+                          <span className="text-lime-500 dark:text-lime-400 mr-1">+</span>
                           {data.recommendation}
                         </p>
                       )}

@@ -5,11 +5,11 @@ const LAST_UPDATED = 'May 2026'
 function Section({ num, title, children }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-semibold text-slate-900 dark:text-white flex items-baseline gap-3">
-        <span className="font-mono-cyber text-xs text-cyan-600 dark:text-cyan-400 shrink-0">{num}</span>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f2f2f2] flex items-baseline gap-3">
+        <span className="font-mono-cyber text-xs text-lime-700 dark:text-lime-400 shrink-0">{num}</span>
         {title}
       </h2>
-      <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed space-y-2 pl-7">
+      <div className="text-sm text-gray-600 dark:text-[#888] leading-relaxed space-y-2 pl-7">
         {children}
       </div>
     </section>
@@ -22,11 +22,11 @@ export default function DisclaimerPage() {
 
       {/* Header */}
       <div className="space-y-3">
-        <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase">
-          &gt; Legal / Disclaimer
+        <p className="text-xs font-mono-cyber text-lime-700 dark:text-lime-400 tracking-widest uppercase">
+          Legal / Disclaimer
         </p>
-        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Disclaimer</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 font-mono-cyber">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-[#f2f2f2]">Disclaimer</h1>
+        <p className="text-sm text-gray-600 dark:text-[#888] font-mono-cyber">
           Last updated: {LAST_UPDATED}
         </p>
         <div className="h-px bg-gradient-to-r from-cyan-400/50 via-fuchsia-500/30 to-transparent" />
@@ -45,7 +45,7 @@ export default function DisclaimerPage() {
 
       <div className="panel p-8 space-y-8">
 
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-gray-600 dark:text-[#888] leading-relaxed">
           This Disclaimer outlines the limitations and legal responsibilities associated
           with using Crucex. Please read it carefully before using the Service.
         </p>
@@ -54,18 +54,18 @@ export default function DisclaimerPage() {
           <p>
             Crucex is designed exclusively for use on systems and networks that you own, operate,
             or have obtained explicit written authorisation to test. The Web Security Scanner
-            performs live HTTP requests and TCP port probes against a target — these are active
+            performs live HTTP requests and TCP port probes against a target - these are active
             network operations.
           </p>
           <p>
-            <strong className="text-slate-700 dark:text-slate-300">Scanning a system without authorisation is a criminal offence</strong>{' '}
+            <strong className="text-gray-700 dark:text-[#ccc]">Scanning a system without authorisation is a criminal offence</strong>{' '}
             in many jurisdictions, including but not limited to:
           </p>
           <ul className="list-disc list-inside space-y-1 mt-2">
-            <li>The Computer Fraud and Abuse Act (CFAA) — United States</li>
-            <li>The Computer Misuse Act 1990 — United Kingdom</li>
-            <li>Directive on Attacks Against Information Systems — European Union</li>
-            <li>Article 138ab of the Wetboek van Strafrecht — Netherlands</li>
+            <li>The Computer Fraud and Abuse Act (CFAA) - United States</li>
+            <li>The Computer Misuse Act 1990 - United Kingdom</li>
+            <li>Directive on Attacks Against Information Systems - European Union</li>
+            <li>Article 138ab of the Wetboek van Strafrecht - Netherlands</li>
           </ul>
           <p className="mt-2">
             You are solely responsible for ensuring that your use of this tool complies with
@@ -118,7 +118,7 @@ export default function DisclaimerPage() {
         <Section num="04" title="Limitation of Liability">
           <p>
             Crucex, its contributors, and maintainers shall not be liable for any damages,
-            losses, or legal consequences — including civil penalties or criminal prosecution —
+            losses, or legal consequences - including civil penalties or criminal prosecution -
             arising from your use or misuse of the Service. This includes, without limitation:
           </p>
           <ul className="list-disc list-inside space-y-1 mt-2">
@@ -145,7 +145,7 @@ export default function DisclaimerPage() {
           <p>
             If you become aware of misuse of this tool or have concerns about a scan targeting
             your systems, contact us at{' '}
-            <a href="mailto:contact@crucex.dev" className="text-cyan-600 dark:text-cyan-400 hover:underline font-mono-cyber">
+            <a href="mailto:contact@crucex.dev" className="text-lime-700 dark:text-lime-400 hover:underline font-mono-cyber">
               contact@crucex.dev
             </a>. We take responsible use seriously.
           </p>
@@ -153,10 +153,11 @@ export default function DisclaimerPage() {
 
       </div>
 
-      <div className="flex gap-4 text-xs font-mono-cyber text-slate-400">
-        <Link to="/terms"   className="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Terms of Service →</Link>
-        <Link to="/privacy" className="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Privacy Policy →</Link>
+      <div className="flex gap-4 text-xs font-mono-cyber text-gray-500 dark:text-[#555]">
+        <Link to="/terms"   className="hover:text-lime-700 dark:hover:text-lime-400 transition-colors">Terms of Service →</Link>
+        <Link to="/privacy" className="hover:text-lime-700 dark:hover:text-lime-400 transition-colors">Privacy Policy →</Link>
       </div>
     </div>
   )
 }
+
