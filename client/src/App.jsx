@@ -6,6 +6,9 @@ import CorvexLogo from './components/shared/CorvexLogo'
 import HomePage from './pages/HomePage'
 import ScannerPage from './pages/ScannerPage'
 import PasswordPage from './pages/PasswordPage'
+import TermsPage from './pages/TermsPage'
+import PrivacyPage from './pages/PrivacyPage'
+import DisclaimerPage from './pages/DisclaimerPage'
 
 function ThemeToggle() {
   const { dark, toggle } = useTheme()
@@ -86,9 +89,12 @@ function Layout() {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/scanner" element={<ScannerPage />} />
-          <Route path="/password" element={<PasswordPage />} />
+          <Route path="/"           element={<HomePage />} />
+          <Route path="/scanner"    element={<ScannerPage />} />
+          <Route path="/password"   element={<PasswordPage />} />
+          <Route path="/terms"      element={<TermsPage />} />
+          <Route path="/privacy"    element={<PrivacyPage />} />
+          <Route path="/disclaimer" element={<DisclaimerPage />} />
         </Routes>
       </main>
 
