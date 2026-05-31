@@ -80,10 +80,8 @@ export default function Footer() {
 
           <div className="col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-7 h-7 rounded bg-lime-400 flex items-center justify-center shrink-0">
-                <span className="text-[#090909] font-bold text-[10px] font-mono-cyber">CX</span>
-              </div>
-              <span className="text-sm font-semibold tracking-wide text-gray-900 dark:text-[#f2f2f2]">CRUCEX</span>
+              <img src="/crucexv3.png" alt="Crucex" width={36} height={36} className="w-9 h-9 rounded object-contain" />
+              <span className="text-base font-bold tracking-wide text-gray-900 dark:text-[#f2f2f2]">CRUCEX</span>
             </div>
             <p className="text-sm text-gray-600 dark:text-[#666] leading-relaxed max-w-sm">
               An open-source suite for security analysis. No tracking, no accounts, no data
@@ -128,7 +126,7 @@ export default function Footer() {
             </span>
             <span className="text-gray-200 dark:text-[#222]">|</span>
             <p className="text-sm text-gray-600 dark:text-[#666]">
-              Questions?{' '}
+              Questions?  { ' '}
               <a href="mailto:contact@crucex.dev" className="text-lime-700 dark:text-lime-400 hover:underline font-mono-cyber">
                 contact@crucex.dev
               </a>
