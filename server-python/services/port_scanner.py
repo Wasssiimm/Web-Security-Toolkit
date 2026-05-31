@@ -36,8 +36,10 @@ def scan(url: str) -> dict:
             "Install it from https://nmap.org/download.html and make sure it is on your PATH."
         )
 
-    # Build a result for every port we intended to scan
-    host_data = nm[host] if host in nm.all_hosts() else {}
+    # nmap resolves the hostname to an IP internally, so nm.all_hosts() contains
+    # IPs not the original hostname — use the first scanned host if available.
+    all_hosts = nm.all_hosts()
+    host_data = nm[all_hosts[0]] if all_hosts else {}
     ports = []
 
     for port_num, meta in PORTS_META.items():

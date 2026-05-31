@@ -6,7 +6,7 @@ const scanRoutes     = require('./routes/scan')
 const passwordRoutes = require('./routes/password')
 
 const app  = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 app.use(cors())
 app.use(express.json())
