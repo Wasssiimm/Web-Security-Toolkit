@@ -2,6 +2,6 @@ vars {
   nodeUrl: http://localhost:3001
   pythonUrl: http://localhost:8000
   testUrl: https://github.com
-  testPassword: P@ssw0rd123
-  testHash: 5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8
+  testPassword: replace-with-any-test-password
+  testHash: replace-with-sha1-hash-of-your-test-password
 }
