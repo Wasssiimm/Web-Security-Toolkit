@@ -396,16 +396,180 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] Step 9: Password – PatternWarnings + BreachResult
 - [x] Loading states + error handling woven into every step above
 
-### 🔲 Phase 5 – Testing & Finalisation
+### 🔲 Phase 5 – Security Hardening (Active — branch: `phase-5-security`)
+
+Goal: make the full stack production-safe. Every layer — Node gateway, Python engine, and React client — must be hardened against the OWASP Top 10, DoS, and injection attacks. Work top-to-bottom per section below.
+
+---
+
+#### 5A — Node.js API Gateway (`server-node/`)
+
+**Input validation (express-validator or Joi)**
+- [ ] Install `express-validator` — validate every incoming request body strictly
+- [ ] `POST /api/scan/*` — validate `url`: must match `^https?://`, max 2 048 chars, reject on failure with 400
+- [ ] `POST /api/password/analyze` — validate `password`: string, min 1 char, max 128 chars (prevent DoS via huge strings)
+- [ ] `POST /api/password/breach` — validate `hash`: exactly 40 uppercase hex chars (`/^[A-F0-9]{40}$/`)
+- [ ] Reject requests with unexpected extra fields (strip unknown keys or return 400)
+- [ ] Return structured `{ error, field }` JSON on validation failure — never expose stack traces
+
+**Rate limiting (`express-rate-limit`)**
+- [ ] Install `express-rate-limit`
+- [ ] Global limiter: 200 requests / 15 min per IP — applied to all routes
+- [ ] Strict limiter on `/api/scan/*`: 10 requests / 15 min per IP (port scanning is resource-heavy)
+- [ ] Moderate limiter on `/api/password/*`: 40 requests / 15 min per IP
+- [ ] Return `429 Too Many Requests` with `Retry-After` header and JSON body `{ error: 'Rate limit exceeded' }`
+- [ ] Use `keyGenerator: req => req.ip` — ensure `trust proxy` is set correctly if behind nginx/proxy
+
+**Security headers (`helmet`)**
+- [ ] Install `helmet` and apply as first middleware in `index.js`
+- [ ] Configure `Content-Security-Policy`: `default-src 'none'` (this is an API, no HTML served)
+- [ ] `X-Content-Type-Options: nosniff`
+- [ ] `X-Frame-Options: DENY`
+- [ ] `Strict-Transport-Security: max-age=31536000; includeSubDomains` (production only)
+- [ ] `Referrer-Policy: no-referrer`
+- [ ] Remove `X-Powered-By: Express` (helmet does this automatically)
+
+**CORS hardening**
+- [ ] Replace current CORS config (if any) with explicit `cors()` options
+- [ ] `origin`: allow only `http://localhost:5173` (dev) and `https://crucex.dev` (prod) — no wildcard
+- [ ] `methods`: `['POST']` only — no GET, PUT, DELETE exposed
+- [ ] `allowedHeaders`: `['Content-Type']` only
+
+**Request body limits**
+- [ ] Set `express.json({ limit: '10kb' })` — reject oversized bodies with 413
+- [ ] Set `express.urlencoded({ limit: '10kb', extended: false })`
+
+**SSRF prevention (strengthen `validate.js`)**
+- [ ] Audit current private IP blocklist — add missing ranges:
+  - `169.254.0.0/16` — link-local / AWS metadata endpoint
+  - `::1`, `fc00::/7`, `fe80::/10` — IPv6 loopback + private
+  - `0.0.0.0` — catch-all
+- [ ] Resolve hostname to IP before validation — prevent DNS rebinding attacks (use `dns.lookup()`)
+- [ ] Block `.local`, `.internal`, `.localhost` TLD hostnames explicitly
+
+**Error handling**
+- [ ] Global error handler in `index.js` — catch all unhandled errors, return `500 { error: 'Internal server error' }` — no stack trace, no internal detail
+- [ ] Ensure `console.error` logs the real error server-side for debugging
+- [ ] Wrap all route handlers in try/catch (or use express-async-errors)
+
+**Dependency audit**
+- [ ] Run `npm audit` — fix or document all high/critical findings
+- [ ] Pin dependency versions in `package.json` (no `^` on direct deps in production)
+
+---
+
+#### 5B — Python FastAPI Engine (`server-python/`)
+
+**Input validation (Pydantic — strengthen existing models)**
+- [ ] All request models: set `max_length` on every string field
+- [ ] URL field: add Pydantic `HttpUrl` validator or custom regex validator — reject non-HTTP(S) schemes
+- [ ] Port scan target: validate hostname/IP before passing to nmap — reject if private IP range
+- [ ] Add `model_config = ConfigDict(extra='forbid')` to every Pydantic model — reject unknown fields with 422
+
+**nmap command injection prevention (`port_scanner.py`)**
+- [ ] Audit `port_scanner.py` — confirm no user-controlled string is interpolated into the nmap command args
+- [ ] Use `nmap.PortScanner()` Python API (object-based) exclusively — never `subprocess` with string formatting
+- [ ] Whitelist allowed nmap arguments — if any arguments are configurable, validate against an allowlist
+- [ ] Set nmap `--host-timeout` (e.g. `30s`) and `--max-retries 1` — prevent hanging scans
+
+**SSRF in port scanner**
+- [ ] Duplicate the private-IP blocklist from Node into Python (`server-python/services/port_scanner.py`) — defence in depth
+- [ ] Resolve hostname to IP in Python before scanning, check IP against blocked ranges
+- [ ] Block `.local`, `.internal`, `.localhost` domains in Python too
+
+**Rate limiting (`slowapi`)**
+- [ ] Install `slowapi` (SlowAPI is the FastAPI equivalent of express-rate-limit)
+- [ ] Apply per-IP rate limit to all routes: 60 requests / min (Python endpoints are internal-only but still protect them)
+- [ ] Return 429 on limit exceeded
+
+**Request timeouts**
+- [ ] Wrap all `httpx` / `requests` HTTP calls with an explicit `timeout=10` (seconds)
+- [ ] Nmap scans: enforce `--host-timeout 30s` — never let a scan block indefinitely
+- [ ] Add `asyncio.wait_for` or background task timeout for async endpoints if applicable
+
+**Error handling**
+- [ ] Add FastAPI exception handler for `RequestValidationError` — return clean `{ detail }` without internal paths
+- [ ] Add catch-all `HTTPException` handler — no Python tracebacks in responses
+- [ ] Ensure uvicorn access logs do not log request bodies (passwords must not appear in logs)
+
+**Dependency audit**
+- [ ] Run `pip-audit` or `safety check` — fix all known CVEs in `requirements.txt`
+- [ ] Pin all versions in `requirements.txt` (no `>=` ranges in production)
+
+---
+
+#### 5C — React Frontend (`client/`)
+
+**XSS audit**
+- [ ] Search entire codebase for `dangerouslySetInnerHTML` — should be zero occurrences; remove any found
+- [ ] Search for `eval()`, `Function()`, `innerHTML` assignments — fix any found
+- [ ] Confirm all user-supplied content (scan results, URL echoing) is rendered via JSX (auto-escaped), never injected as raw HTML
+
+**Client-side input validation (defence in depth)**
+- [ ] `ScannerForm`: validate URL format client-side before submit (`new URL(input)` + protocol check) — show inline error without hitting the API
+- [ ] `PasswordForm`: enforce max 128-char length with `maxLength={128}` on the input
+- [ ] Prevent double-submit: disable button immediately on click, re-enable only on error
+
+**Content Security Policy (meta tag)**
+- [ ] Add `<meta http-equiv="Content-Security-Policy">` to `index.html`:
+  - `default-src 'self'`
+  - `script-src 'self'` (no `unsafe-inline`, no `unsafe-eval`)
+  - `style-src 'self' https://fonts.googleapis.com`
+  - `font-src 'self' https://fonts.gstatic.com`
+  - `connect-src 'self'` (API calls go to same origin via Vite proxy)
+  - `img-src 'self' data:`
+  - `frame-ancestors 'none'`
+
+**Sensitive data handling**
+- [ ] Confirm passwords are never stored in `localStorage`, `sessionStorage`, or React state after analysis completes
+- [ ] Confirm scan results are session-only (already the case — verify no accidental persistence)
+- [ ] Confirm no secrets appear in `client/` source (API keys, etc.)
+
+**Dependency audit**
+- [ ] Run `npm audit` in `client/` — fix or document all high/critical findings
+
+---
+
+#### 5D — Cross-cutting Concerns
+
+**Environment variable audit**
+- [ ] Review `.env.example` — ensure all secrets have placeholder values, never real values
+- [ ] Confirm `.env` is in `.gitignore` — check `git log` for accidental secret commits
+- [ ] Add `NODE_ENV=production` check in Node server — enforce stricter error handling in prod mode
+
+**Logging hygiene**
+- [ ] Grep codebase for any `console.log` that could output a password, hash, or full URL — remove or replace with safe summary
+- [ ] Ensure `server-node` logs do not include request bodies
+- [ ] Ensure `server-python` uvicorn logs do not include request bodies
+
+**Docker security review**
+- [ ] Confirm all containers run as non-root user — check each Dockerfile for `USER` directive
+- [ ] Add `USER node` (or equivalent) to any Dockerfile missing it
+- [ ] Review inter-container network — Python engine should only be reachable from Node, not exposed externally
+- [ ] Set `read_only: true` on container filesystems where applicable in `docker-compose.yml`
+
+**Manual end-to-end security test**
+- [ ] Submit a URL with `http://localhost` — must be blocked (SSRF)
+- [ ] Submit a URL with `http://192.168.1.1` — must be blocked (private IP)
+- [ ] Submit 15 rapid scan requests — must hit rate limiter and return 429
+- [ ] Submit a 1MB JSON body — must return 413
+- [ ] Submit `password` field containing `<script>alert(1)</script>` — must be escaped in UI output
+- [ ] Submit URL field containing `' OR 1=1 --` — must be rejected by validation
+- [ ] Check all API responses — must include security headers from helmet
+- [ ] Verify no stack traces appear in any error response body
+
+---
+
+### 🔲 Phase 6 – Testing & Finalisation
 - [ ] End-to-end tests (multiple URLs and passwords)
 - [ ] Bug fixes and code clean-up
 - [ ] README screenshots
 
-### 🔲 Phase 6 – Reflection & Documentation
+### 🔲 Phase 7 – Reflection & Documentation
 - [ ] Reflection report
 - [ ] Final GitHub push, make repo public
 
-### 🔲 Phase 7 – VPS Deployment
+### 🔲 Phase 8 – VPS Deployment
 - [ ] Provision a VPS (DigitalOcean / Hetzner / Linode — ~€5/month)
 - [ ] Install Node.js 20, Python 3.12, nmap on the server
 - [ ] Build React: `npm run build` → static files in `client/dist/`
@@ -422,11 +586,11 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 ## Branching Strategy (Gitflow)
 
 ```
-master       ← final, release-ready code (only updated when project is fully complete)
-  └─ develop ← integration branch — all completed phases merge here
-       └─ phase-3-password-backend   ← active
-       └─ phase-4-frontend           ← next
-       └─ phase-5-testing            ← etc.
+master         ← final, release-ready code (only updated when project is fully complete)
+  └─ develop   ← integration branch — all completed phases merge here
+       └─ phase-4-frontend    ✅ merged
+       └─ phase-5-security    ← active
+       └─ phase-6-testing     ← next
 ```
 
 **Workflow per phase:**
