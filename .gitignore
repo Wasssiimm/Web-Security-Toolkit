@@ -9,3 +9,6 @@ venv/
 .claude/
 
 bruno/environments/local.bru
+
+CLAUDE.md
+POA_*.md
