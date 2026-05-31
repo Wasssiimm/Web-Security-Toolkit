@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Panel from '../components/shared/Panel'
 
@@ -132,11 +132,44 @@ const PRIVACY = [
 ]
 
 function TerminalMock() {
+  const [history,  setHistory]  = useState([])
+  const [input,    setInput]    = useState('')
+  const scrollRef = useRef(null)
+  const inputRef  = useRef(null)
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      const cmd = input.trim()
+      if (cmd) {
+        setHistory(h => [...h, cmd])
+        setInput('')
+      }
+    }
+  }
+
+  function reset() {
+    setHistory([])
+    setInput('')
+    inputRef.current?.focus()
+  }
+
+  useEffect(() => {
+    if (history.length === 0 || !scrollRef.current) return
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+  }, [history])
+
   return (
-    <div className="panel font-mono-cyber text-[12px] sm:text-[13px] leading-relaxed overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 dark:border-[#1e1e1e] bg-gray-50 dark:bg-[#0d0d0d]">
+    <div className="panel font-mono-cyber text-[12px] sm:text-[13px] leading-relaxed overflow-hidden flex flex-col h-96">
+
+      {/* Title bar — red dot acts as reset button */}
+      <div className="flex-none flex items-center justify-between px-4 py-2.5 border-b border-gray-100 dark:border-[#1e1e1e] bg-gray-50 dark:bg-[#0d0d0d]">
         <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
+          <button
+            onClick={reset}
+            title="Reset terminal"
+            className="w-2.5 h-2.5 rounded-full bg-red-500 hover:bg-red-400 transition-colors"
+          />
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-lime-400/60" />
         </div>
@@ -146,8 +179,24 @@ function TerminalMock() {
         </span>
       </div>
 
-      <div className="p-5 space-y-1 text-gray-600 dark:text-[#aaa] relative overflow-hidden">
+      {/* Scrollable output — flex-1 + min-h-0 fills remaining space exactly */}
+      <div
+        ref={scrollRef}
+        className="flex-1 min-h-0 px-5 pt-5 pb-2 space-y-1 text-gray-600 dark:text-[#aaa] overflow-y-auto overscroll-none relative"
+        onClick={() => inputRef.current?.focus()}
+        onWheel={e => {
+          const el = scrollRef.current
+          if (!el) return
+          const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1
+          const atTop    = el.scrollTop <= 0
+          if ((e.deltaY > 0 && atBottom) || (e.deltaY < 0 && atTop)) {
+            e.preventDefault()
+          }
+        }}
+      >
         <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-lime-400/6 to-transparent animate-scan pointer-events-none" />
+
+        {/* Static scan output */}
         <p>
           <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
           <span className="text-gray-900 dark:text-[#f2f2f2]">crucex</span> scan https://target.example
@@ -172,11 +221,37 @@ function TerminalMock() {
           <span className="text-gray-500 dark:text-[#666]">Weak</span>{' '}
           <span className="text-yellow-500 dark:text-yellow-400">Strict-Transport-Security</span>
         </p>
-        <p className="pt-1">
-          <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
-          <span className="inline-block w-2 h-4 bg-lime-500 dark:bg-lime-400 align-middle animate-blink" />
-        </p>
+
+        {/* User command history */}
+        {history.map((cmd, i) => (
+          <p key={i} className="mt-1">
+            <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
+            <span className="text-gray-900 dark:text-[#f2f2f2]">{cmd}</span>
+          </p>
+        ))}
       </div>
+
+      {/* Interactive input row — flex-none stays pinned at the bottom */}
+      <div
+        className="flex-none flex items-center gap-2 px-5 py-3 border-t border-gray-100 dark:border-[#1e1e1e] cursor-text"
+        onClick={() => inputRef.current?.focus()}
+      >
+        <span className="text-lime-700 dark:text-lime-400 select-none shrink-0">$</span>
+        <input
+          ref={inputRef}
+          type="text"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="type a command..."
+          spellCheck={false}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          className="flex-1 bg-transparent outline-none text-gray-900 dark:text-[#f2f2f2] placeholder-gray-400 dark:placeholder-[#333] caret-lime-500 min-w-0"
+        />
+      </div>
+
     </div>
   )
 }
