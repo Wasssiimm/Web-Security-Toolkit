@@ -23,7 +23,7 @@ A full-stack monorepo built as a POA (Personal Development Activity) for a 2nd-y
 Browser (React)
     │  HTTP REST (JSON)
     ▼
-Node.js / Express  ← API gateway, port 3000
+Node.js / Express  ← API gateway, port 3001
     │  internal HTTP
     ├──► Python / FastAPI  ← security engine, port 8000
     └──► HIBP API          ← external, k-anonymity breach check
@@ -35,7 +35,7 @@ Node.js / Express  ← API gateway, port 3000
 - This mirrors real-world microservice patterns — each service does one thing.
 
 ### Why a proxy in vite.config.js?
-The React dev server runs on port 5173. Without a proxy, browser requests to `/api/...` would fail due to CORS. The proxy forwards them to Node on port 3000, so the frontend never has to hardcode a backend URL.
+The React dev server runs on port 5173. Without a proxy, browser requests to `/api/...` would fail due to CORS. The proxy forwards them to Node on port 3001, so the frontend never has to hardcode a backend URL.
 
 ---
 
@@ -129,7 +129,7 @@ web-security-toolkit/
 
 ## API Endpoints Reference
 
-### Node.js (port 3000)
+### Node.js (port 3001)
 
 | Method | Endpoint | What it does |
 |---|---|---|
@@ -381,14 +381,20 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [x] `hibpService.js` – fix breach response format (`breached`, `occurrences`, `message`)
 - [x] End-to-end test via Bruno
 
-### 🔲 Phase 4 – Frontend (See Frontend Design Guide above)
-- [ ] Navigation layout + routing
-- [ ] Scanner: ScannerForm, HeaderResults, PortResults
-- [ ] Scanner: VulnList, ReportCard + JSON export
-- [ ] Password: PasswordForm, StrengthBar, EntropyGauge
-- [ ] Password: PatternWarnings, BreachResult
-- [ ] Shared: ScoreCircle, Badge, Spinner, ErrorMessage
-- [ ] Loading states + error handling on every API call
+### ✅ Phase 4 – Frontend (Complete)
+- [x] Homepage with hero, stats, feature cards, how it works, privacy section
+- [x] Routes: / = home, /scanner = scanner, /password = password
+- [x] Navigation layout + routing (App.jsx complete from Phase 1)
+- [x] Step 1: Fix api.js + shared components: Badge, Spinner, ErrorMessage
+- [x] Step 2: Shared ScoreCircle (Recharts radial bar)
+- [x] Step 3: Scanner – ScannerForm + ScannerPage with loading/error state
+- [x] Step 4: Scanner – HeaderResults table
+- [x] Step 5: Scanner – PortResults list
+- [x] Step 6: Scanner – VulnList + ReportCard with JSON export
+- [x] Step 7: Password – PasswordForm + StrengthBar
+- [x] Step 8: Password – EntropyGauge (Recharts)
+- [x] Step 9: Password – PatternWarnings + BreachResult
+- [x] Loading states + error handling woven into every step above
 
 ### 🔲 Phase 5 – Testing & Finalisation
 - [ ] End-to-end tests (multiple URLs and passwords)
@@ -403,7 +409,7 @@ Each vulnerability has a severity weight: critical=3, high=2, medium=1, low=0.5.
 - [ ] Provision a VPS (DigitalOcean / Hetzner / Linode — ~€5/month)
 - [ ] Install Node.js 20, Python 3.12, nmap on the server
 - [ ] Build React: `npm run build` → static files in `client/dist/`
-- [ ] Configure Nginx: serve React static files + reverse proxy `/api` to Node on port 3000
+- [ ] Configure Nginx: serve React static files + reverse proxy `/api` to Node on port 3001
 - [ ] Deploy Node API with PM2 (keeps process alive, auto-restarts on crash)
 - [ ] Deploy Python engine with systemd (same as PM2 but for Python)
 - [ ] SSL certificate via Let's Encrypt / Certbot (free HTTPS)

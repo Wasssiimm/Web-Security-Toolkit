@@ -7,4 +7,4 @@ export const scanPorts   = (url) => api.post('/scan/ports',   { url })
 export const scanReport  = (url) => api.post('/scan/report',  { url })
 
 export const analyzePassword = (password)   => api.post('/password/analyze', { password })
-export const checkBreach     = (hashPrefix) => api.post('/password/breach',  { hashPrefix })
+export const checkBreach     = (hash)       => api.post('/password/breach',  { hash })
