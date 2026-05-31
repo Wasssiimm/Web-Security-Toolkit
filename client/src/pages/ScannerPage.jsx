@@ -32,32 +32,32 @@ export default function ScannerPage() {
     <div className="space-y-6 animate-fade-up">
       <Panel className="p-7 space-y-5">
         <div className="flex items-start gap-4">
-          <div className="hidden sm:flex w-12 h-12 rounded-md bg-cyan-100 dark:bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 items-center justify-center shrink-0">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-6 h-6">
+          <div className="hidden sm:flex w-10 h-10 rounded bg-lime-50 dark:bg-lime-400/10 text-lime-700 dark:text-lime-400 items-center justify-center shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5">
               <circle cx="11" cy="11" r="7" />
               <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
             </svg>
           </div>
           <div>
-            <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase mb-1">
-              &gt; SCAN.v2 // ACTIVE
+            <p className="text-xs font-mono-cyber text-lime-700 dark:text-lime-500 tracking-widest uppercase mb-1">
+              Web Security Scanner
             </p>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Web Security Scanner</h1>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed max-w-2xl">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-[#f2f2f2]">Security Header + Port Scan</h1>
+            <p className="text-sm text-gray-600 dark:text-[#888] mt-2 leading-relaxed max-w-2xl">
               Analyse any public website for HTTP security headers, open ports, and known
-              vulnerability patterns. A scored report with actionable recommendations is
+              vulnerability patterns. A scored A-F report with actionable recommendations is
               generated in seconds.
             </p>
           </div>
         </div>
 
-        <div className="flex items-start gap-3 bg-yellow-50 dark:bg-yellow-400/10 border border-yellow-300 dark:border-yellow-400/50 rounded-md px-4 py-3">
-          <span className="text-yellow-600 dark:text-yellow-300 shrink-0 mt-0.5">⚠</span>
-          <p className="text-sm text-yellow-900 dark:text-yellow-100">
-            <span className="font-mono-cyber font-semibold">AUTHORISATION REQUIRED:</span>{' '}
+        <div className="flex items-start gap-3 rounded border border-amber-300/40 dark:border-amber-500/15 bg-amber-50/50 dark:bg-amber-500/[0.04] px-4 py-3">
+          <span className="text-amber-600/90 dark:text-amber-500/70 shrink-0 mt-0.5 text-sm font-mono-cyber">!</span>
+          <p className="text-sm text-amber-900/80 dark:text-amber-200/60 leading-relaxed">
+            <span className="font-semibold text-amber-900 dark:text-amber-200/90">Authorisation required.</span>{' '}
             Only scan websites you own or have explicit permission to test.
             Unauthorised port scanning may be illegal in your jurisdiction.
-            Private and local IP ranges are blocked by this tool.
+            Private and local IP ranges are blocked.
           </p>
         </div>
       </Panel>
@@ -68,9 +68,9 @@ export default function ScannerPage() {
 
       {loading && (
         <Panel className="p-5">
-          <div className="flex items-center gap-3 font-mono-cyber text-sm text-slate-600 dark:text-slate-400">
-            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse-glow" />
-            <span className="animate-pulse">Scanning ports, this may take a moment…</span>
+          <div className="flex items-center gap-3 font-mono-cyber text-sm text-gray-600 dark:text-[#888]">
+            <span className="w-2 h-2 rounded-full bg-lime-400 animate-pulse" />
+            <span>Scanning ports, this may take a moment...</span>
           </div>
         </Panel>
       )}
@@ -80,11 +80,11 @@ export default function ScannerPage() {
           <Panel hover className="flex items-center gap-6 p-6 animate-fade-up">
             <ScoreCircle score={report.totalScore} grade={report.grade} />
             <div>
-              <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase">
-                TARGET
+              <p className="text-xs font-mono-cyber text-lime-700 dark:text-lime-500 tracking-widest uppercase">
+                Target
               </p>
-              <p className="text-xl font-semibold text-slate-900 dark:text-white mt-1 font-mono-cyber break-all">{report.url}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xl font-semibold text-gray-900 dark:text-[#f2f2f2] mt-1 font-mono-cyber break-all">{report.url}</p>
+              <p className="text-sm text-gray-500 dark:text-[#555] mt-1">
                 Scanned {new Date(report.generatedAt).toLocaleString()}
               </p>
             </div>

@@ -15,12 +15,12 @@ export default function EntropyGauge({ entropy, effectiveEntropy, entropyLabel }
   const color   = arcColor(display)
   const data    = [{ value: Math.min(display, 128) / 128 * 100, fill: color }]
   const penalised = effectiveEntropy != null && effectiveEntropy < entropy
-  const trackFill = dark ? '#1f2937' : '#e5e7eb'
+  const trackFill = dark ? '#1a1a1a' : '#e5e7eb'
 
   return (
-    <div className="panel panel-fuchsia p-5">
-      <h3 className="text-xs font-mono-cyber font-semibold text-fuchsia-600 dark:text-fuchsia-400 uppercase tracking-wider mb-4">
-        &gt; Entropy
+    <div className="panel p-6">
+      <h3 className="text-xs font-mono-cyber font-semibold text-gray-500 dark:text-[#555] uppercase tracking-wider mb-4">
+        Entropy
       </h3>
 
       <div className="flex items-center gap-6">
@@ -47,19 +47,19 @@ export default function EntropyGauge({ entropy, effectiveEntropy, entropyLabel }
             <span className="text-xl font-bold leading-none" style={{ color }}>
               {Math.round(display)}
             </span>
-            <span className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">bits</span>
+            <span className="text-xs text-gray-500 dark:text-[#555] mt-0.5">bits</span>
           </div>
         </div>
 
         <div className="space-y-1.5">
           <p className="font-semibold" style={{ color }}>{entropyLabel}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-600 dark:text-[#888]">
             Effective entropy:{' '}
-            <span className="text-gray-800 dark:text-gray-200">{display} bits</span>
+            <span className="text-gray-900 dark:text-[#f2f2f2]">{display} bits</span>
           </p>
           {penalised && (
-            <p className="text-xs text-gray-400 dark:text-gray-500">
-              Raw: {entropy} bits — reduced by pattern penalties
+            <p className="text-xs text-gray-500 dark:text-[#555]">
+              Raw: {entropy} bits - reduced by pattern penalties
             </p>
           )}
         </div>

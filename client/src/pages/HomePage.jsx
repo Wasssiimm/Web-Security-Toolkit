@@ -3,116 +3,98 @@ import { Link } from 'react-router-dom'
 import Panel from '../components/shared/Panel'
 
 const STATS = [
-  { value: '8',    label: 'Security headers',  sub: 'CSP · HSTS · XFO · …',     accent: 'cyan' },
-  { value: '10',   label: 'Ports scanned',     sub: 'FTP · SSH · MySQL · …',    accent: 'fuchsia' },
-  { value: '10B+', label: 'Breached passwords', sub: 'via HIBP k-anonymity',     accent: 'emerald' },
-  { value: '13',   label: 'Pattern detectors',  sub: 'keyboard walks · dates · …', accent: 'cyan' },
+  { value: '8',    label: 'Security headers',  sub: 'CSP · HSTS · XFO · XCTO + 4 more' },
+  { value: '10',   label: 'Ports scanned',     sub: 'FTP, SSH, SMTP, MySQL, Redis…'     },
+  { value: '10B+', label: 'Breach records',    sub: 'via HIBP k-anonymity'               },
+  { value: '13',   label: 'Pattern detectors', sub: 'keyboard walks, dates, leet…'      },
 ]
 
 const FEATURES = [
   {
     title: 'Web Security Scanner',
-    tag: 'SCAN.v2',
     description:
-      'Analyse any public website for missing or misconfigured HTTP security headers, open network ports, and known vulnerability patterns. Get a scored A–F report with actionable recommendations.',
+      'Analyse any public website for missing or misconfigured HTTP security headers, open network ports, and known vulnerability patterns. Get a scored A-F report with actionable recommendations.',
     bullets: [
       'Content-Security-Policy, HSTS, X-Frame-Options + 5 more',
-      'Port scan across FTP, SSH, databases and common web ports',
-      'Vulnerability detection with severity weighting',
-      'Exportable JSON report — diff against previous scans',
+      'Port scan across FTP, SSH, databases, and common web ports',
+      'Vulnerability detection with weighted severity scoring',
+      'Export the full report as JSON for diffing and auditing',
     ],
     cta: 'Launch Scanner',
     to: '/scanner',
-    accent: 'cyan',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-6 h-6">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5">
         <circle cx="11" cy="11" r="7" />
         <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
-        <path d="M11 8v6M8 11h6" strokeLinecap="round" />
       </svg>
     ),
   },
   {
     title: 'Password Analyser',
-    tag: 'PWD.x86',
     description:
       'Evaluate any password for entropy, keyboard patterns, common words, and date sequences. Check it against 10 billion known breached passwords without ever transmitting the password itself.',
     bullets: [
-      'Entropy calculation + effective entropy after penalties',
-      '13 pattern types: keyboard walks, dates, leetspeak …',
-      'Online and offline crack-time estimates (GPU rates)',
+      'Entropy calculation with effective-entropy after penalties',
+      '13 pattern types: keyboard walks, dates, leetspeak and more',
+      'Offline and online crack-time estimates using GPU rates',
       'Breach check via Have I Been Pwned k-anonymity model',
     ],
     cta: 'Analyse Password',
     to: '/password',
-    accent: 'fuchsia',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-6 h-6">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5">
         <rect x="4" y="11" width="16" height="10" rx="2" />
         <path d="M8 11V7a4 4 0 018 0v4" />
-        <circle cx="12" cy="16" r="1.2" fill="currentColor" />
       </svg>
     ),
   },
 ]
 
 const THREAT_LANDSCAPE = [
-  { value: '2.6B', label: 'Records leaked this year', delta: '+18%', up: true },
-  { value: '78%',  label: 'Sites missing CSP headers', delta: '+4%',  up: true },
-  { value: '14s',  label: 'Average breach detection',  delta: '-9%',  up: false },
+  { value: '2.6B',  label: 'Records leaked this year',       delta: '+18%',  up: true  },
+  { value: '78%',   label: 'Sites missing CSP headers',      delta: '+4%',   up: true  },
+  { value: '14s',   label: 'Average breach detection',       delta: '-9%',   up: false },
   { value: '4 in 5', label: 'Passwords reused across sites', delta: 'stable', up: null },
 ]
 
 const TICKER = [
-  'CVE-2024-3094 ▸ xz-utils backdoor',
+  'CVE-2024-3094 - xz-utils backdoor',
   'HIBP +12M records · Jan 2026',
   'CSP misconfig top web finding',
   'OWASP A01: Broken Access Control',
   'Quantum-safe TLS: NIST PQC finalized',
   'SSH brute force +220% YoY',
   'Heartbleed still alive on 0.3% of hosts',
-  'CVE-2024-21762 ▸ Fortinet auth bypass — CVSS 9.8',
+  'CVE-2024-21762 - Fortinet auth bypass CVSS 9.8',
   'Ransomware payments hit $1.1B in 2023',
-  '43% of breaches involve web applications — Verizon DBIR',
-  'CVE-2024-1709 ▸ ConnectWise ScreenConnect RCE',
+  '43% of breaches involve web applications',
+  'CVE-2024-1709 - ConnectWise ScreenConnect RCE',
   'Log4Shell still exploited on 30% of vulnerable hosts',
   'Default passwords account for 21% of compromised devices',
-  'CVE-2023-44487 ▸ HTTP/2 Rapid Reset DDoS',
+  'CVE-2023-44487 - HTTP/2 Rapid Reset DDoS',
   '94% of malware delivered via email',
   'Supply chain attacks up 633% since 2021',
-  'CVE-2024-27198 ▸ JetBrains TeamCity auth bypass',
+  'CVE-2024-27198 - JetBrains TeamCity auth bypass',
   'Average time to detect a breach: 194 days',
-  'Only 5% of company folders properly protected on average',
-  'CVE-2024-6387 ▸ OpenSSH regreSSHion RCE',
+  'CVE-2024-6387 - OpenSSH regreSSHion RCE',
   'Phishing accounts for 36% of all data breaches',
-  'Zero-day exploits sold for up to $2.5M on grey markets',
-  'CVE-2024-23897 ▸ Jenkins arbitrary file read',
-  'MFA blocks 99.9% of automated account attacks — Microsoft',
-  '3.4B phishing emails sent daily worldwide',
-  'CVE-2023-4966 ▸ Citrix Bleed session token leak',
-  'Password reuse found in 65% of credential stuffing attacks',
-  'API attacks grew 137% in 2024',
-  'CVE-2024-49138 ▸ Windows CLFS driver privilege escalation',
-  'X.509 certificate misissuance incidents up 40% in 2024',
 ]
 
 const HOW_IT_WORKS = [
   {
     tool: 'Web Security Scanner',
-    accent: 'cyan',
     steps: [
       { title: 'Target',  desc: 'Paste any public URL and confirm authorisation.' },
       { title: 'Probe',   desc: 'Headers, 10 ports, and vuln signatures run in parallel.' },
-      { title: 'Report',  desc: 'A–F score with per-finding recommendations. JSON export.' },
+      { title: 'Report',  desc: 'A-F score with per-finding recommendations. JSON export.' },
     ],
   },
   {
     tool: 'Password Analyser',
-    accent: 'fuchsia',
     steps: [
-      { title: 'Input',     desc: 'Your password is hashed in-browser. Never logged.' },
-      { title: 'Analyse',   desc: 'Entropy + 13 pattern detectors run server-side.' },
-      { title: 'Verify',    desc: 'Only 5 hash characters reach HIBP. k-anonymity preserved.' },
+      { title: 'Input',   desc: 'Your password is hashed in-browser. Never logged.' },
+      { title: 'Analyse', desc: 'Entropy and 13 pattern detectors run server-side.' },
+      { title: 'Verify',  desc: 'Only 5 hash characters reach HIBP. k-anonymity preserved.' },
     ],
   },
 ]
@@ -124,7 +106,7 @@ const FAQ = [
   },
   {
     q: 'Where do my passwords go?',
-    a: 'Nowhere. The password is hashed with SHA-1 in your browser. Only the first 5 characters of the hash are sent to Have I Been Pwned, which returns all hashes sharing that prefix. The matching is done locally — your full hash never leaves the device.',
+    a: 'Nowhere. The password is hashed with SHA-1 in your browser. Only the first 5 characters of the hash are sent to Have I Been Pwned, which returns all hashes sharing that prefix. The matching is done locally, so your full hash never leaves the device.',
   },
   {
     q: 'Why open-source?',
@@ -142,7 +124,7 @@ const FAQ = [
 
 const PRIVACY = [
   'Passwords and URLs are never stored or logged.',
-  'Breach checks use k-anonymity — only 5 hash chars reach HIBP.',
+  'Breach checks use k-anonymity. Only 5 hash chars reach HIBP.',
   'Port scanning is blocked for all private and local IP ranges.',
   'All source code is open-source and self-hostable.',
   'Zero analytics, zero trackers, zero third-party scripts.',
@@ -152,48 +134,47 @@ const PRIVACY = [
 function TerminalMock() {
   return (
     <div className="panel font-mono-cyber text-[12px] sm:text-[13px] leading-relaxed overflow-hidden">
-      {/* fake window controls */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-white/5 bg-slate-50/60 dark:bg-slate-900/60">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 dark:border-[#1e1e1e] bg-gray-50 dark:bg-[#0d0d0d]">
         <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-          <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
+          <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-lime-400/60" />
         </div>
-        <span className="text-[10px] text-slate-400 dark:text-slate-500 tracking-widest">
-          crucex://scan/--live
-        </span>
-        <span className="text-[10px] text-emerald-500 dark:text-emerald-400 flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-glow" /> LIVE
+        <span className="text-[11px] text-gray-500 dark:text-[#555]">crucex - scan</span>
+        <span className="text-[11px] text-lime-700 dark:text-lime-500 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-lime-500 animate-pulse" /> live
         </span>
       </div>
 
-      <div className="p-5 space-y-1 text-slate-700 dark:text-slate-300 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-cyan-400/10 to-transparent animate-scan pointer-events-none" />
-
-        <p><span className="text-emerald-500 dark:text-emerald-400">$</span> <span className="text-cyan-600 dark:text-cyan-300">crucex</span> scan https://target.example</p>
-        <p className="text-slate-500 dark:text-slate-500">→ resolving DNS ............ <span className="text-emerald-500 dark:text-emerald-400">93.184.216.34</span></p>
-        <p className="text-slate-500 dark:text-slate-500">→ probing headers (8/8) ..... <span className="text-emerald-500 dark:text-emerald-400">OK</span></p>
-        <p className="text-slate-500 dark:text-slate-500">→ scanning ports (10/10) .... <span className="text-emerald-500 dark:text-emerald-400">OK</span></p>
-        <p className="text-slate-500 dark:text-slate-500">→ checking vuln signatures .. <span className="text-yellow-500 dark:text-yellow-400">3 findings</span></p>
-        <p className="mt-2">
-          <span className="text-slate-400 dark:text-slate-500">grade: </span>
-          <span className="text-yellow-500 dark:text-yellow-400 font-bold">B+</span>
-          <span className="text-slate-400 dark:text-slate-500"> · score: </span>
-          <span className="text-cyan-600 dark:text-cyan-300">7.6 / 10</span>
+      <div className="p-5 space-y-1 text-gray-600 dark:text-[#aaa] relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-lime-400/6 to-transparent animate-scan pointer-events-none" />
+        <p>
+          <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
+          <span className="text-gray-900 dark:text-[#f2f2f2]">crucex</span> scan https://target.example
+        </p>
+        <p className="text-gray-500 dark:text-[#555]">{'  '}resolving DNS ........... <span className="text-lime-700 dark:text-lime-400">93.184.216.34</span></p>
+        <p className="text-gray-500 dark:text-[#555]">{'  '}probing headers (8/8) ... <span className="text-lime-700 dark:text-lime-400">OK</span></p>
+        <p className="text-gray-500 dark:text-[#555]">{'  '}scanning ports (10/10) .. <span className="text-lime-700 dark:text-lime-400">OK</span></p>
+        <p className="text-gray-500 dark:text-[#555]">{'  '}checking vuln sigs ...... <span className="text-yellow-500 dark:text-yellow-400">3 findings</span></p>
+        <p className="mt-3">
+          <span className="text-gray-500 dark:text-[#555]">grade{'  '}</span>
+          <span className="text-yellow-500 font-bold">B</span>
+          <span className="text-gray-500 dark:text-[#555]">{'    '}score{'  '}</span>
+          <span className="text-gray-900 dark:text-[#f2f2f2]">7.6 / 10</span>
         </p>
         <p>
-          <span className="text-fuchsia-500 dark:text-fuchsia-400">!</span>{' '}
-          <span className="text-slate-600 dark:text-slate-400">Missing</span>{' '}
+          <span className="text-red-500 dark:text-red-400">!</span>{' '}
+          <span className="text-gray-500 dark:text-[#666]">Missing</span>{' '}
           <span className="text-yellow-500 dark:text-yellow-400">Content-Security-Policy</span>
         </p>
         <p>
-          <span className="text-fuchsia-500 dark:text-fuchsia-400">!</span>{' '}
-          <span className="text-slate-600 dark:text-slate-400">Weak</span>{' '}
+          <span className="text-orange-500 dark:text-orange-400">!</span>{' '}
+          <span className="text-gray-500 dark:text-[#666]">Weak</span>{' '}
           <span className="text-yellow-500 dark:text-yellow-400">Strict-Transport-Security</span>
         </p>
         <p className="pt-1">
-          <span className="text-emerald-500 dark:text-emerald-400">$</span>{' '}
-          <span className="inline-block w-2 h-4 bg-cyan-500 dark:bg-cyan-300 align-middle animate-blink" />
+          <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
+          <span className="inline-block w-2 h-4 bg-lime-500 dark:bg-lime-400 align-middle animate-blink" />
         </p>
       </div>
     </div>
@@ -203,20 +184,20 @@ function TerminalMock() {
 function FaqItem({ q, a, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
-    <div className="border-b border-slate-200 dark:border-white/5 last:border-b-0">
+    <div className="border-b border-gray-100 dark:border-[#1e1e1e] last:border-b-0">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center justify-between gap-4 py-5 text-left group"
       >
-        <span className="font-medium text-slate-800 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors">
+        <span className="text-sm font-medium text-gray-800 dark:text-[#e0e0e0] group-hover:text-lime-700 dark:group-hover:text-lime-400 transition-colors">
           {q}
         </span>
-        <span className={`flex-shrink-0 w-7 h-7 rounded-md border border-slate-200 dark:border-white/10 flex items-center justify-center text-cyan-500 dark:text-cyan-400 transition-transform ${open ? 'rotate-45 bg-cyan-50 dark:bg-cyan-500/10' : ''}`}>
+        <span className={`flex-shrink-0 w-6 h-6 rounded border border-gray-200 dark:border-[#2a2a2a] flex items-center justify-center text-lime-700 dark:text-lime-400 font-mono-cyber text-xs transition-transform ${open ? 'rotate-45 bg-lime-50 dark:bg-lime-400/10' : ''}`}>
           +
         </span>
       </button>
       {open && (
-        <div className="pb-5 pr-10 text-sm text-slate-600 dark:text-slate-400 leading-relaxed animate-fade-up">
+        <div className="pb-5 pr-8 text-sm text-gray-600 dark:text-[#888] leading-relaxed animate-fade-up">
           {a}
         </div>
       )}
@@ -229,78 +210,62 @@ export default function HomePage() {
     <div className="space-y-24 pb-12">
 
       {/* HERO */}
-      <section className="relative pt-8 pb-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="pt-8 pb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-7 animate-fade-up">
-            {/* status badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-300/50 dark:border-emerald-400/30 bg-emerald-50/60 dark:bg-emerald-500/10 backdrop-blur">
-              <span className="relative flex w-2 h-2">
-                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
-                <span className="relative w-2 h-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="text-xs font-mono-cyber text-emerald-700 dark:text-emerald-300 tracking-wide">
-                ALL SYSTEMS OPERATIONAL · 99.97% UPTIME
-              </span>
-            </div>
-
-            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-[1.05]">
-              <span className="text-slate-900 dark:text-white">Security</span><br />
-              <span className="gradient-text">isn't a feature.</span><br />
-              <span className="text-slate-900 dark:text-white">It's the </span>
-              <span className="relative inline-block">
-                <span className="text-cyan-500 dark:text-cyan-300 text-glow-cyan">baseline</span>
-                <span className="absolute left-0 right-0 -bottom-1 h-0.5 bg-gradient-to-r from-cyan-400 to-fuchsia-500" />
-              </span>
-              <span className="text-slate-900 dark:text-white">.</span>
+            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-[1.05] text-gray-900 dark:text-[#f2f2f2]">
+              Security tools<br />for developers<br />
+              <span className="text-lime-500 dark:text-lime-400">who ship.</span>
             </h1>
 
-            <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
-              Scan websites for vulnerabilities. Check passwords against billions of known
-              breaches. Free, open-source, and built with privacy as a non-negotiable.
+            <p className="text-base text-gray-600 dark:text-[#888] leading-relaxed max-w-lg">
+              Scan any website for missing security headers, open ports, and known vulnerability
+              patterns. Check passwords against billions of known breaches without logging a single
+              character.
             </p>
 
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-3 flex-wrap">
               <Link
                 to="/scanner"
-                className="group relative bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-slate-950 font-semibold px-7 py-3.5 rounded-md transition-all shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/60 hover:-translate-y-0.5 inline-flex items-center gap-2"
+                className="group bg-lime-400 hover:bg-lime-300 text-[#090909] font-semibold px-6 py-2.5 rounded transition-all inline-flex items-center gap-2 active:scale-[0.98]"
               >
-                <span>Launch Scanner</span>
-                <span className="transition-transform group-hover:translate-x-1">→</span>
+                Run a scan
+                <span className="transition-transform group-hover:translate-x-0.5">→</span>
               </Link>
               <Link
                 to="/password"
-                className="group relative border border-slate-300 dark:border-white/10 hover:border-fuchsia-400/60 bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm text-slate-700 dark:text-slate-200 font-semibold px-7 py-3.5 rounded-md transition-all hover:-translate-y-0.5 inline-flex items-center gap-2"
+                className="group border border-gray-200 dark:border-[#222] hover:border-gray-300 dark:hover:border-[#333] text-gray-700 dark:text-[#ccc] font-semibold px-6 py-2.5 rounded transition-all inline-flex items-center gap-2 active:scale-[0.98]"
               >
-                <span>Analyse Password</span>
-                <span className="text-fuchsia-500 dark:text-fuchsia-400 transition-transform group-hover:translate-x-1">→</span>
+                Check a password
+                <span className="text-gray-300 dark:text-[#444] transition-transform group-hover:translate-x-0.5">→</span>
               </Link>
             </div>
 
-            <div className="flex items-center gap-6 pt-2 text-xs font-mono-cyber text-slate-500 dark:text-slate-500">
-              <span className="flex items-center gap-1.5"><span className="text-emerald-500">✓</span> No signup</span>
-              <span className="flex items-center gap-1.5"><span className="text-emerald-500">✓</span> No tracking</span>
-              <span className="flex items-center gap-1.5"><span className="text-emerald-500">✓</span> MIT licensed</span>
+            <div className="flex items-center gap-5 text-xs font-mono-cyber text-gray-500 dark:text-[#555]">
+              <span className="flex items-center gap-1.5"><span className="text-lime-500">+</span> No signup</span>
+              <span className="flex items-center gap-1.5"><span className="text-lime-500">+</span> No tracking</span>
+              <span className="flex items-center gap-1.5"><span className="text-lime-500">+</span> MIT licensed</span>
             </div>
           </div>
 
-          <div className="animate-fade-up" style={{ animationDelay: '120ms' }}>
+          <div className="animate-fade-up" style={{ animationDelay: '100ms' }}>
             <TerminalMock />
           </div>
         </div>
       </section>
 
-      {/* THREAT TICKER */}
-      <section className="relative -mx-6 px-0 py-3 border-y border-slate-200 dark:border-white/5 bg-slate-50/60 dark:bg-slate-950/60 backdrop-blur-md overflow-hidden">
+      {/* CVE FEED */}
+      <section className="-mx-6 px-0 py-3 border-y border-gray-100 dark:border-[#1a1a1a] bg-gray-50/90 dark:bg-[#0c0c0c] overflow-hidden">
         <div className="flex items-center gap-6">
-          <span className="flex-shrink-0 ml-6 inline-flex items-center gap-2 text-xs font-mono-cyber text-fuchsia-600 dark:text-fuchsia-400 uppercase tracking-widest">
-            <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 animate-pulse-glow" />
-            Live Threat Feed
+          <span className="flex-shrink-0 ml-6 inline-flex items-center gap-2 text-[11px] font-mono-cyber text-lime-700 dark:text-lime-500 uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-lime-500 animate-pulse" />
+            CVE Feed
           </span>
           <div className="relative flex overflow-hidden flex-1">
-            <div className="flex gap-12 animate-ticker whitespace-nowrap font-mono-cyber text-xs text-slate-600 dark:text-slate-400">
+            <div className="flex gap-12 animate-ticker whitespace-nowrap font-mono-cyber text-xs text-gray-500 dark:text-[#555]">
               {[...TICKER, ...TICKER].map((t, i) => (
                 <span key={i} className="flex items-center gap-3">
-                  <span className="text-cyan-500 dark:text-cyan-400">▸</span>
+                  <span className="text-lime-500 dark:text-lime-700">+</span>
                   {t}
                 </span>
               ))}
@@ -310,68 +275,44 @@ export default function HomePage() {
       </section>
 
       {/* STATS */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {STATS.map((s, i) => (
-          <Panel key={s.label} accent={s.accent} hover className="p-6 animate-fade-up" >
-            <div className="flex items-baseline gap-2">
-              <p className={`text-4xl font-bold font-mono-cyber ${
-                s.accent === 'fuchsia' ? 'text-fuchsia-500 dark:text-fuchsia-400 text-glow-fuchsia'
-                : s.accent === 'emerald' ? 'text-emerald-500 dark:text-emerald-400'
-                : 'text-cyan-500 dark:text-cyan-300 text-glow-cyan'
-              }`}>
-                {s.value}
-              </p>
+      <section>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {STATS.map(s => (
+            <div key={s.label} className="group relative panel panel-hover p-6">
+              {/* corner ticks — a nod to the terminal-bracket panels */}
+              <span className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-lime-500/40 group-hover:border-lime-500 transition-colors" />
+              <span className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-lime-500/40 group-hover:border-lime-500 transition-colors" />
+              <p className="text-4xl font-bold font-mono-cyber text-gray-900 dark:text-[#f2f2f2]">{s.value}</p>
+              <p className="text-sm font-medium text-gray-700 dark:text-[#ccc] mt-2">{s.label}</p>
+              <p className="text-xs text-gray-500 dark:text-[#555] mt-1 font-mono-cyber">{s.sub}</p>
             </div>
-            <p className="text-sm text-slate-700 dark:text-slate-300 mt-2 font-medium">{s.label}</p>
-            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 font-mono-cyber">{s.sub}</p>
-          </Panel>
-        ))}
+          ))}
+        </div>
       </section>
 
       {/* FEATURES */}
-      <section className="space-y-6">
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase mb-2">
-              &gt; What you can do
-            </p>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Two tools. Zero excuses.</h2>
-          </div>
-          <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-500 font-mono-cyber">[ 02 / 04 ]</p>
+      <section className="space-y-8">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-[#f2f2f2]">Two tools. Zero excuses.</h2>
+          <p className="text-sm text-gray-600 dark:text-[#888] mt-2">Free, open-source, and built for developers who take security seriously.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {FEATURES.map((f, i) => (
-            <Panel
-              key={f.title}
-              accent={f.accent}
-              hover
-              className="p-8 flex flex-col gap-5 animate-fade-up"
-            >
-              <div className="flex items-start justify-between">
-                <div className={`w-12 h-12 rounded-md flex items-center justify-center ${
-                  f.accent === 'fuchsia'
-                    ? 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-500/15 dark:text-fuchsia-300'
-                    : 'bg-cyan-100 text-cyan-600 dark:bg-cyan-500/15 dark:text-cyan-300'
-                }`}>
-                  {f.icon}
-                </div>
-                <span className="text-[10px] font-mono-cyber tracking-widest text-slate-400 dark:text-slate-500 px-2 py-1 border border-slate-200 dark:border-white/10 rounded">
-                  {f.tag}
-                </span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {FEATURES.map(f => (
+            <Panel key={f.title} hover className="p-7 flex flex-col gap-5">
+              <div className="w-10 h-10 rounded bg-lime-50 dark:bg-lime-400/10 text-lime-700 dark:text-lime-400 flex items-center justify-center shrink-0">
+                {f.icon}
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">{f.title}</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{f.description}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#f2f2f2]">{f.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-[#888] leading-relaxed">{f.description}</p>
               </div>
 
-              <ul className="space-y-2 flex-1 pt-2">
+              <ul className="space-y-2.5 flex-1">
                 {f.bullets.map(b => (
-                  <li key={b} className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-300">
-                    <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${
-                      f.accent === 'fuchsia' ? 'bg-fuchsia-500' : 'bg-cyan-500'
-                    }`} />
+                  <li key={b} className="flex items-start gap-3 text-sm text-gray-600 dark:text-[#aaa]">
+                    <span className="mt-1.5 w-1 h-1 rounded-full shrink-0 bg-lime-500" />
                     {b}
                   </li>
                 ))}
@@ -379,14 +320,10 @@ export default function HomePage() {
 
               <Link
                 to={f.to}
-                className={`inline-flex items-center gap-2 text-sm font-mono-cyber font-semibold transition-all group/cta ${
-                  f.accent === 'fuchsia'
-                    ? 'text-fuchsia-600 dark:text-fuchsia-300 hover:text-fuchsia-500'
-                    : 'text-cyan-600 dark:text-cyan-300 hover:text-cyan-500'
-                }`}
+                className="inline-flex items-center gap-2 text-sm font-medium text-lime-700 dark:text-lime-400 hover:text-lime-500 dark:hover:text-lime-300 transition-colors group/cta"
               >
                 {f.cta}
-                <span className="transition-transform group-hover/cta:translate-x-1">→</span>
+                <span className="transition-transform group-hover/cta:translate-x-0.5">→</span>
               </Link>
             </Panel>
           ))}
@@ -394,108 +331,74 @@ export default function HomePage() {
       </section>
 
       {/* THREAT LANDSCAPE */}
-      <section className="space-y-6">
+      <section className="space-y-8">
         <div>
-          <p className="text-xs font-mono-cyber text-fuchsia-600 dark:text-fuchsia-400 tracking-widest uppercase mb-2">
-            &gt; Threat landscape
-          </p>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">The internet is not getting safer.</h2>
-          <p className="text-slate-600 dark:text-slate-400 mt-3 max-w-2xl">
-            Public threat-intel signals from 2026. The baseline is shifting — and most public
-            sites still ship default headers.
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-[#f2f2f2]">The internet is not getting safer.</h2>
+          <p className="text-sm text-gray-600 dark:text-[#888] mt-2 max-w-xl">
+            Public threat-intel signals from 2026. The baseline is shifting and most public sites still ship default headers.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {THREAT_LANDSCAPE.map((t, i) => (
-            <div key={t.label} className="relative p-6 rounded-md border border-slate-200 dark:border-white/5 bg-gradient-to-br from-white/60 to-slate-50/40 dark:from-slate-900/40 dark:to-slate-950/40 backdrop-blur-sm overflow-hidden group hover:border-fuchsia-400/40 transition-colors">
-              <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-fuchsia-500/5 group-hover:bg-fuchsia-500/15 transition-colors blur-2xl" />
-              <div className="relative">
-                <p className="text-3xl font-bold font-mono-cyber text-slate-900 dark:text-white">{t.value}</p>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.label}</p>
-                {t.delta && (
-                  <p className={`text-xs font-mono-cyber mt-3 inline-flex items-center gap-1 ${
-                    t.up === true ? 'text-red-500 dark:text-red-400'
-                    : t.up === false ? 'text-emerald-500 dark:text-emerald-400'
-                    : 'text-slate-500'
-                  }`}>
-                    {t.up === true ? '▲' : t.up === false ? '▼' : '◆'} {t.delta} YoY
-                  </p>
-                )}
-              </div>
+          {THREAT_LANDSCAPE.map(t => (
+            <div key={t.label} className="p-6 rounded border border-gray-100 dark:border-[#1e1e1e] bg-white dark:bg-[#111]">
+              <p className="text-3xl font-bold font-mono-cyber text-gray-900 dark:text-[#f2f2f2]">{t.value}</p>
+              <p className="text-sm text-gray-600 dark:text-[#888] mt-1.5">{t.label}</p>
+              {t.delta && (
+                <p className={`text-xs font-mono-cyber mt-3 flex items-center gap-1 ${
+                  t.up === true  ? 'text-red-500 dark:text-red-400'
+                  : t.up === false ? 'text-lime-700 dark:text-lime-400'
+                  : 'text-gray-500 dark:text-[#555]'
+                }`}>
+                  {t.up === true ? '+ ' : t.up === false ? '- ' : '  '}{t.delta} YoY
+                </p>
+              )}
             </div>
           ))}
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="space-y-6">
-        <div>
-          <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase mb-2">
-            &gt; Workflow
-          </p>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">How it works</h2>
-        </div>
+      <section className="space-y-8">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-[#f2f2f2]">How it works</h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {HOW_IT_WORKS.map(tool => (
-            <Panel key={tool.tool} accent={tool.accent} className="p-7">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-mono-cyber text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">
-                  {tool.tool}
-                </h3>
-                <span className="text-[10px] font-mono-cyber text-slate-400 dark:text-slate-500">
-                  03 STEPS
-                </span>
-              </div>
-
-              <div className="relative">
-                {/* vertical line */}
-                <span className={`absolute left-[15px] top-3 bottom-3 w-px ${
-                  tool.accent === 'fuchsia'
-                    ? 'bg-gradient-to-b from-fuchsia-400/60 via-fuchsia-400/30 to-transparent'
-                    : 'bg-gradient-to-b from-cyan-400/60 via-cyan-400/30 to-transparent'
-                }`} />
-
-                <ol className="space-y-6">
-                  {tool.steps.map((s, i) => (
-                    <li key={s.title} className="flex gap-5 relative">
-                      <span className={`relative z-10 w-8 h-8 rounded-md flex items-center justify-center font-mono-cyber text-xs font-bold shrink-0 ${
-                        tool.accent === 'fuchsia'
-                          ? 'bg-fuchsia-500/10 border border-fuchsia-400/40 text-fuchsia-600 dark:text-fuchsia-300'
-                          : 'bg-cyan-500/10 border border-cyan-400/40 text-cyan-600 dark:text-cyan-300'
-                      }`}>
-                        0{i + 1}
-                      </span>
-                      <div className="pt-0.5">
-                        <p className="font-semibold text-slate-900 dark:text-white">{s.title}</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">{s.desc}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+            <Panel key={tool.tool} className="p-7">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-[#f2f2f2] mb-6 font-mono-cyber uppercase tracking-wider">{tool.tool}</h3>
+              <ol className="space-y-5">
+                {tool.steps.map((s, i) => (
+                  <li key={s.title} className="flex gap-4">
+                    <span className="w-6 h-6 rounded bg-lime-50 dark:bg-lime-400/10 text-lime-700 dark:text-lime-400 font-mono-cyber text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      {i + 1}
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-[#e0e0e0]">{s.title}</p>
+                      <p className="text-sm text-gray-600 dark:text-[#888] mt-0.5 leading-relaxed">{s.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </Panel>
           ))}
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="space-y-6">
+      <section id="faq" className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div>
-            <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase mb-2">
-              &gt; FAQ
+            <p className="text-xs font-mono-cyber text-lime-700 dark:text-lime-500 uppercase tracking-widest mb-3">
+              Questions
             </p>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-              Questions <br />we get a lot.
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-[#f2f2f2]">
+              Common questions.
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
-              If something isn't covered here, the code is the source of truth. Check the
-              repo or reach out — we answer.
+            <p className="text-sm text-gray-600 dark:text-[#888] mt-3 leading-relaxed">
+              If something isn't covered here, the code is the source of truth. Check the repo or reach out.
             </p>
-            <a href="#" className="inline-flex items-center gap-2 mt-6 text-sm font-mono-cyber text-cyan-600 dark:text-cyan-300 hover:text-cyan-500">
-              Read the docs →
+            <a href="#" className="inline-flex items-center gap-2 mt-5 text-sm font-mono-cyber text-lime-700 dark:text-lime-400 hover:text-lime-500 transition-colors">
+              View the source →
             </a>
           </div>
 
@@ -509,50 +412,38 @@ export default function HomePage() {
 
       {/* PRIVACY */}
       <section className="space-y-6">
-        <div>
-          <p className="text-xs font-mono-cyber text-emerald-600 dark:text-emerald-400 tracking-widest uppercase mb-2">
-            &gt; Principles
-          </p>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Privacy isn't a footer disclaimer.</h2>
-        </div>
-
-        <Panel accent="emerald" className="p-8">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
-            {PRIVACY.map(p => (
-              <li key={p} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
-                <span className="mt-0.5 w-5 h-5 rounded-md bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs shrink-0">
-                  ✓
-                </span>
-                {p}
-              </li>
-            ))}
-          </ul>
-        </Panel>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-[#f2f2f2]">Privacy isn't a footer disclaimer.</h2>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3">
+          {PRIVACY.map(p => (
+            <li key={p} className="flex items-start gap-3 text-sm text-gray-600 dark:text-[#aaa]">
+              <span className="mt-0.5 text-lime-500 font-mono-cyber shrink-0 font-bold text-xs">+</span>
+              {p}
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* CTA */}
-      <section className="relative">
-        <div className="relative overflow-hidden rounded-lg border border-slate-200 dark:border-white/5 bg-gradient-to-br from-cyan-500/10 via-fuchsia-500/5 to-transparent dark:from-cyan-500/15 dark:via-fuchsia-500/10 p-12 text-center">
-          <div className="absolute inset-0 bg-grid opacity-40" />
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] bg-cyan-500/20 rounded-full blur-3xl" />
-
-          <div className="relative space-y-5">
-            <p className="font-mono-cyber text-xs text-cyan-600 dark:text-cyan-400 tracking-widest uppercase">
-              &gt; Ready when you are
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white max-w-2xl mx-auto">
-              Find out what your stack is leaking. <span className="gradient-text">In under a minute.</span>
+      <section>
+        <div className="relative overflow-hidden rounded border border-gray-100 dark:border-[#1e1e1e] bg-gray-50 dark:bg-[#0d0d0d] p-12">
+          <div className="absolute inset-0 bg-dot-grid bg-dot-fade" />
+          <div className="relative text-center space-y-5">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-[#f2f2f2] max-w-xl mx-auto">
+              Find out what your stack is leaking.
             </h2>
-            <div className="flex gap-4 justify-center pt-3 flex-wrap">
+            <p className="text-sm text-gray-600 dark:text-[#888] max-w-sm mx-auto">
+              Takes under a minute. No account, no install, no configuration.
+            </p>
+            <div className="flex gap-3 justify-center pt-1 flex-wrap">
               <Link
                 to="/scanner"
-                className="bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-slate-950 font-semibold px-7 py-3.5 rounded-md transition-all shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/60"
+                className="bg-lime-400 hover:bg-lime-300 text-[#090909] font-semibold px-6 py-2.5 rounded transition-all active:scale-[0.98]"
               >
-                Start a scan →
+                Start a scan
               </Link>
               <Link
                 to="/password"
-                className="border border-slate-300 dark:border-white/10 hover:border-fuchsia-400/60 bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm text-slate-700 dark:text-slate-200 font-semibold px-7 py-3.5 rounded-md transition-all"
+                className="border border-gray-200 dark:border-[#222] hover:border-gray-300 dark:hover:border-[#333] text-gray-700 dark:text-[#ccc] font-semibold px-6 py-2.5 rounded transition-all"
               >
                 Test a password
               </Link>

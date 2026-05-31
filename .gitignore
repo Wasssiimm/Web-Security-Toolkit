@@ -12,3 +12,5 @@ bruno/environments/local.bru
 
 CLAUDE.md
 POA_*.md
+.agents/
+skills-lock.json

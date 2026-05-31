@@ -12,7 +12,7 @@ export default function ScoreCircle({ score = 0, grade = '?' }) {
   const { dark } = useTheme()
   const color = arcColor(score)
   const data = [{ value: (score / 10) * 100, fill: color }]
-  const trackFill = dark ? '#1f2937' : '#e5e7eb'
+  const trackFill = dark ? '#1a1a1a' : '#e5e7eb'
 
   return (
     <div className="relative w-36 h-36">
@@ -39,7 +39,7 @@ export default function ScoreCircle({ score = 0, grade = '?' }) {
         <span className="text-3xl font-bold leading-none" style={{ color }}>
           {grade}
         </span>
-        <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{score}/10</span>
+        <span className="text-xs text-gray-500 dark:text-[#555] mt-1">{score}/10</span>
       </div>
     </div>
   )

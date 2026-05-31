@@ -5,11 +5,11 @@ const LAST_UPDATED = 'May 2026'
 function Section({ num, title, children }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-semibold text-slate-900 dark:text-white flex items-baseline gap-3">
-        <span className="font-mono-cyber text-xs text-cyan-600 dark:text-cyan-400 shrink-0">{num}</span>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f2f2f2] flex items-baseline gap-3">
+        <span className="font-mono-cyber text-xs text-lime-700 dark:text-lime-400 shrink-0">{num}</span>
         {title}
       </h2>
-      <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed space-y-2 pl-7">
+      <div className="text-sm text-gray-600 dark:text-[#888] leading-relaxed space-y-2 pl-7">
         {children}
       </div>
     </section>
@@ -22,11 +22,11 @@ export default function TermsPage() {
 
       {/* Header */}
       <div className="space-y-3">
-        <p className="text-xs font-mono-cyber text-cyan-600 dark:text-cyan-400 tracking-widest uppercase">
-          &gt; Legal / Terms
+        <p className="text-xs font-mono-cyber text-lime-700 dark:text-lime-400 tracking-widest uppercase">
+          Legal / Terms
         </p>
-        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Terms of Service</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 font-mono-cyber">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-[#f2f2f2]">Terms of Service</h1>
+        <p className="text-sm text-gray-600 dark:text-[#888] font-mono-cyber">
           Last updated: {LAST_UPDATED}
         </p>
         <div className="h-px bg-gradient-to-r from-cyan-400/50 via-fuchsia-500/30 to-transparent" />
@@ -34,7 +34,7 @@ export default function TermsPage() {
 
       <div className="panel p-8 space-y-8">
 
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-gray-600 dark:text-[#888] leading-relaxed">
           By accessing or using Crucex ("the Service"), you agree to be bound by these Terms of Service.
           If you do not agree with any part of these terms, you may not use the Service.
           Crucex is provided as an open-source project for educational and security-research purposes.
@@ -85,8 +85,8 @@ export default function TermsPage() {
 
         <Section num="04" title="Disclaimer of Warranties">
           <p>
-            The Service is provided <strong className="text-slate-700 dark:text-slate-300">"as is"</strong> and{' '}
-            <strong className="text-slate-700 dark:text-slate-300">"as available"</strong> without any warranty of any kind,
+            The Service is provided <strong className="text-gray-700 dark:text-[#ccc]">"as is"</strong> and{' '}
+            <strong className="text-gray-700 dark:text-[#ccc]">"as available"</strong> without any warranty of any kind,
             express or implied, including but not limited to warranties of merchantability, fitness
             for a particular purpose, or non-infringement.
           </p>
@@ -116,7 +116,7 @@ export default function TermsPage() {
           <p>
             Crucex is released under the{' '}
             <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer"
-               className="text-cyan-600 dark:text-cyan-400 hover:underline">MIT License</a>.
+               className="text-lime-700 dark:text-lime-400 hover:underline">MIT License</a>.
             You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
             copies of the software, subject to the conditions in the MIT License.
           </p>
@@ -130,11 +130,11 @@ export default function TermsPage() {
           <p>
             The Password Analyser uses the{' '}
             <a href="https://haveibeenpwned.com/API/v3" target="_blank" rel="noopener noreferrer"
-               className="text-cyan-600 dark:text-cyan-400 hover:underline">Have I Been Pwned (HIBP) API</a>{' '}
+               className="text-lime-700 dark:text-lime-400 hover:underline">Have I Been Pwned (HIBP) API</a>{' '}
             for breach checking. Only the first 5 characters of a password's SHA-1 hash are
             transmitted to HIBP. Your use of this feature is also subject to{' '}
             <a href="https://haveibeenpwned.com/API/v3" target="_blank" rel="noopener noreferrer"
-               className="text-cyan-600 dark:text-cyan-400 hover:underline">HIBP's terms</a>.
+               className="text-lime-700 dark:text-lime-400 hover:underline">HIBP's terms</a>.
           </p>
         </Section>
 
@@ -149,7 +149,7 @@ export default function TermsPage() {
         <Section num="09" title="Contact">
           <p>
             Questions about these Terms?{' '}
-            <a href="mailto:contact@crucex.dev" className="text-cyan-600 dark:text-cyan-400 hover:underline font-mono-cyber">
+            <a href="mailto:contact@crucex.dev" className="text-lime-700 dark:text-lime-400 hover:underline font-mono-cyber">
               contact@crucex.dev
             </a>
           </p>
@@ -157,9 +157,9 @@ export default function TermsPage() {
 
       </div>
 
-      <div className="flex gap-4 text-xs font-mono-cyber text-slate-400">
-        <Link to="/privacy"    className="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Privacy Policy →</Link>
-        <Link to="/disclaimer" className="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Disclaimer →</Link>
+      <div className="flex gap-4 text-xs font-mono-cyber text-gray-500 dark:text-[#555]">
+        <Link to="/privacy"    className="hover:text-lime-700 dark:hover:text-lime-400 transition-colors">Privacy Policy →</Link>
+        <Link to="/disclaimer" className="hover:text-lime-700 dark:hover:text-lime-400 transition-colors">Disclaimer →</Link>
       </div>
     </div>
   )
