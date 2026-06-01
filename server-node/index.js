@@ -11,6 +11,18 @@ const app     = express()
 const PORT    = process.env.PORT    || 3001
 const IS_PROD = process.env.NODE_ENV === 'production'
 
+// ── Production startup guard ──────────────────────────────────────────────────
+// Refuse to start if critical env vars are missing in production.
+// Catches the most common deployment mistake: shipping with insecure defaults.
+if (IS_PROD) {
+  const required = ['CORS_ORIGIN', 'INTERNAL_API_TOKEN']
+  const missing  = required.filter(k => !process.env[k])
+  if (missing.length) {
+    console.error(`FATAL: missing required env vars in production: ${missing.join(', ')}`)
+    process.exit(1)
+  }
+}
+
 // ── Security headers ─────────────────────────────────────────────────────────
 // Must be the very first middleware so every response carries these headers.
 app.use(helmet({
