@@ -2,19 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!--
+      Content-Security-Policy — stripped in dev mode by vite.config.js so Vite HMR works.
+      Applied only in the production build.
+
+      NOTE: frame-ancestors is NOT supported in <meta> tags (browsers ignore it).
+      It must be set as an HTTP response header in Nginx — see Phase 9 Nginx config.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; object-src 'none'" />
     <link rel="icon" type="image/png" href="/crucexv3.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crucex — Web Security Toolkit</title>
-    <script>
-      (function() {
-        var theme = localStorage.getItem('theme');
-        if (theme === 'light') { document.documentElement.classList.remove('dark'); }
-        else { document.documentElement.classList.add('dark'); }
-      })();
-    </script>
+    <!-- Theme detection must run before React mounts to prevent flash of wrong theme.
+         External file so it is allowed by script-src 'self'. -->
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>
