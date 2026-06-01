@@ -1,13 +1,32 @@
 import { useState } from 'react'
 import Spinner from '../shared/Spinner'
 
+function validateUrl(url) {
+  try {
+    const parsed = new URL(url)
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      return 'Only http:// and https:// URLs are allowed'
+    }
+    return null
+  } catch {
+    return 'Please enter a valid URL (e.g. https://example.com)'
+  }
+}
+
 export default function ScannerForm({ onSubmit, loading }) {
   const [permitted, setPermitted] = useState(false)
+  const [urlError,  setUrlError]  = useState(null)
 
   function handleSubmit(e) {
     e.preventDefault()
     const url = e.target.url.value.trim()
-    if (url && permitted) onSubmit(url)
+    const error = validateUrl(url)
+    if (error) {
+      setUrlError(error)
+      return
+    }
+    setUrlError(null)
+    if (permitted) onSubmit(url)
   }
 
   return (
@@ -21,6 +40,7 @@ export default function ScannerForm({ onSubmit, loading }) {
             placeholder="https://target.example"
             required
             disabled={loading}
+            onChange={() => urlError && setUrlError(null)}
             className="w-full bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] rounded px-4 py-2.5 pl-10 text-gray-900 dark:text-[#f2f2f2] placeholder-gray-400 dark:placeholder-[#444] font-mono-cyber text-sm focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 disabled:opacity-50 transition-all"
           />
         </div>
@@ -33,6 +53,10 @@ export default function ScannerForm({ onSubmit, loading }) {
           {loading ? 'Scanning...' : 'Scan'}
         </button>
       </div>
+
+      {urlError && (
+        <p className="text-xs text-red-500 dark:text-red-400 font-mono-cyber pl-1">{urlError}</p>
+      )}
 
       <label className="flex items-center gap-3 cursor-pointer w-fit group">
         <input
