@@ -5,21 +5,28 @@ const { passwordAnalyzeRules, passwordBreachRules } = require('../middleware/val
 
 const router = express.Router()
 
-router.post('/analyze', ...passwordAnalyzeRules, async (req, res) => {
+function isBridgeDown(err) {
+  return err.code === 'ECONNREFUSED' || err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT'
+}
+
+router.post('/analyze', ...passwordAnalyzeRules, async (req, res, next) => {
   try {
     const result = await pythonBridge.post('/password/analyze', { password: req.body.password })
     res.json(result)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    if (isBridgeDown(err)) {
+      return res.status(503).json({ error: 'Security engine unavailable — try again later.' })
+    }
+    next(err)
   }
 })
 
-router.post('/breach', ...passwordBreachRules, async (req, res) => {
+router.post('/breach', ...passwordBreachRules, async (req, res, next) => {
   try {
     const result = await hibpService.checkBreach(req.body.hash)
     res.json(result)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    next(err) // HIBP errors — global handler returns generic 500, no internal details
   }
 })
 
