@@ -1,5 +1,6 @@
 const express = require('express')
 const { validateUrl } = require('../middleware/validate')
+const { scanUrlRules } = require('../middleware/validators')
 const headerService = require('../services/headerService')
 const pythonBridge  = require('../services/pythonBridge')
 
@@ -27,7 +28,7 @@ function mergeQuality(headersResult, qualityResult) {
 
 // POST /api/scan/headers
 // Returns presence + quality analysis for the 8 security headers
-router.post('/headers', validateUrl, async (req, res) => {
+router.post('/headers', ...scanUrlRules, validateUrl, async (req, res) => {
   try {
     const result = await headerService.checkHeaders(req.body.url)
 
@@ -47,7 +48,7 @@ router.post('/headers', validateUrl, async (req, res) => {
 
 // POST /api/scan/ports
 // Delegates to Python's nmap wrapper
-router.post('/ports', validateUrl, async (req, res) => {
+router.post('/ports', ...scanUrlRules, validateUrl, async (req, res) => {
   try {
     const result = await pythonBridge.post('/scan/ports', { url: req.body.url })
     res.json(result)
@@ -58,7 +59,7 @@ router.post('/ports', validateUrl, async (req, res) => {
 
 // POST /api/scan/report
 // Full scan: headers + quality + ports + vulnerability detection + score/grade
-router.post('/report', validateUrl, async (req, res) => {
+router.post('/report', ...scanUrlRules, validateUrl, async (req, res) => {
   try {
     // Step 1 — run header fetch (Node) and port scan (Python) in parallel
     const [headers, ports] = await Promise.all([
