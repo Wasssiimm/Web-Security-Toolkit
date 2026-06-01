@@ -85,10 +85,18 @@ app.use('/api/password', passwordLimiter, passwordRoutes)
 app.get('/health', (_req, res) => res.json({ status: 'ok' }))
 
 // ── Global error handler ──────────────────────────────────────────────────────
-// Catches any unhandled error thrown in a route. Returns a generic message to
-// the client so internals are never exposed; logs the real error server-side.
+// Logs the real error server-side; returns safe, generic messages to clients.
+// 4xx errors from middleware (body-parser 413, JSON syntax 400) keep their
+// status codes but get sanitised messages. Everything else → generic 500.
 app.use((err, _req, res, _next) => {
   console.error(err)
+  const status = err.status || err.statusCode || 500
+  if (status === 413) {
+    return res.status(413).json({ error: 'Request body too large' })
+  }
+  if (status >= 400 && status < 500) {
+    return res.status(status).json({ error: 'Bad request' })
+  }
   res.status(500).json({ error: 'Internal server error' })
 })
 

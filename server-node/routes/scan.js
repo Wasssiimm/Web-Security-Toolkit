@@ -6,8 +6,12 @@ const pythonBridge  = require('../services/pythonBridge')
 
 const router = express.Router()
 
-// Extracts { 'header-key': 'value', ... } from the headerService result
-// so it can be sent to Python's /scan/headers for quality analysis
+// True when the Python engine is unreachable (connection refused / reset / timed out).
+// Used to return a user-friendly 503 instead of leaking "ECONNREFUSED 127.0.0.1:8000".
+function isBridgeDown(err) {
+  return err.code === 'ECONNREFUSED' || err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT'
+}
+
 function rawHeaderValues(headersResult) {
   return Object.fromEntries(
     Object.entries(headersResult.headers)
@@ -16,7 +20,6 @@ function rawHeaderValues(headersResult) {
   )
 }
 
-// Merges Python's quality analysis back into the Node headers result in-place
 function mergeQuality(headersResult, qualityResult) {
   for (const [key, q] of Object.entries(qualityResult.headers)) {
     if (headersResult.headers[key]) {
@@ -27,54 +30,48 @@ function mergeQuality(headersResult, qualityResult) {
 }
 
 // POST /api/scan/headers
-// Returns presence + quality analysis for the 8 security headers
 router.post('/headers', ...scanUrlRules, validateUrl, async (req, res) => {
   try {
     const result = await headerService.checkHeaders(req.body.url)
-
-    // Enrich with Python quality analysis — best-effort, don't fail if Python is down
     try {
       const quality = await pythonBridge.post('/scan/headers', { headers: rawHeaderValues(result) })
       mergeQuality(result, quality)
     } catch {
       // Python unavailable — return basic presence check without quality data
     }
-
     res.json(result)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    // headerService throws user-facing messages ("Could not reach …")
+    res.status(503).json({ error: err.message })
   }
 })
 
 // POST /api/scan/ports
-// Delegates to Python's nmap wrapper
-router.post('/ports', ...scanUrlRules, validateUrl, async (req, res) => {
+router.post('/ports', ...scanUrlRules, validateUrl, async (req, res, next) => {
   try {
     const result = await pythonBridge.post('/scan/ports', { url: req.body.url })
     res.json(result)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    if (isBridgeDown(err)) {
+      return res.status(503).json({ error: 'Security engine unavailable — try again later.' })
+    }
+    next(err) // Unexpected — global handler returns generic 500, no internal details
   }
 })
 
 // POST /api/scan/report
-// Full scan: headers + quality + ports + vulnerability detection + score/grade
-router.post('/report', ...scanUrlRules, validateUrl, async (req, res) => {
+router.post('/report', ...scanUrlRules, validateUrl, async (req, res, next) => {
   try {
-    // Step 1 — run header fetch (Node) and port scan (Python) in parallel
     const [headers, ports] = await Promise.all([
       headerService.checkHeaders(req.body.url),
       pythonBridge.post('/scan/ports', { url: req.body.url })
     ])
 
-    // Step 2 — enrich headers with Python quality analysis
     const quality = await pythonBridge.post('/scan/headers', { headers: rawHeaderValues(headers) })
     mergeQuality(headers, quality)
 
-    // Step 3 — vulnerability detection using enriched headers + port results
     const vulns = await pythonBridge.post('/scan/vulnerabilities', { headers, ports })
 
-    // Step 4 — assemble the final report
     res.json({
       url:             req.body.url,
       totalScore:      vulns.score,
@@ -89,7 +86,14 @@ router.post('/report', ...scanUrlRules, validateUrl, async (req, res) => {
       generatedAt:     new Date().toISOString()
     })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    if (isBridgeDown(err)) {
+      return res.status(503).json({ error: 'Security engine unavailable — try again later.' })
+    }
+    // headerService throws user-facing messages
+    if (err.message?.startsWith('Could not reach')) {
+      return res.status(503).json({ error: err.message })
+    }
+    next(err) // Unexpected — global handler returns generic 500
   }
 })
 
