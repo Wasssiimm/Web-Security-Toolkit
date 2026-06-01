@@ -131,9 +131,133 @@ const PRIVACY = [
   'No accounts, no cookies, no fingerprinting.',
 ]
 
+function runCommand(raw) {
+  const [cmd, ...args] = raw.trim().split(/\s+/)
+  switch (cmd.toLowerCase()) {
+    case 'whoami':
+      return [{ text: 'user', color: 'default' }]
+    case 'id':
+      return [{ text: 'uid=1337(user) gid=1337(user) groups=1337(user),27(sudo),1000(sec)', color: 'default' }]
+    case 'pwd':
+      return [{ text: '/home/user/crucex', color: 'default' }]
+    case 'uname': {
+      const flag = args[0]
+      if (flag === '-a' || flag === '--all')
+        return [{ text: 'Linux crucex 6.8.0-51-generic #52-Ubuntu SMP x86_64 GNU/Linux', color: 'default' }]
+      return [{ text: 'Linux', color: 'default' }]
+    }
+    case 'date':
+      return [{ text: new Date().toString(), color: 'default' }]
+    case 'echo':
+      return [{ text: args.join(' ') || '', color: 'default' }]
+    case 'ls':
+      return [
+        { text: 'crucex.conf    reports/    wordlists/    scripts/', color: 'lime' },
+        { text: 'README.md      .env.example    .env', color: 'default' },
+      ]
+    case 'cat':
+      if (args[0] === 'crucex.conf')
+        return [
+          { text: '# Crucex configuration', color: 'muted' },
+          { text: 'timeout=5000', color: 'default' },
+          { text: 'ports=21,22,25,80,443,3306,5432,6379,8080,8443', color: 'default' },
+          { text: 'headers=8', color: 'default' },
+        ]
+      if (args[0] === 'README.md')
+        return [{ text: 'Crucex — Web Security Toolkit. Run `crucex help` for usage.', color: 'default' }]
+      if (args[0] === '.env')
+        return [
+          { text: 'lol you thought 💀', color: 'yellow' },
+          { text: 'nice try though', color: 'muted' },
+        ]
+      return [{ text: `cat: ${args[0] ?? '(no file)'}: No such file or directory`, color: 'red' }]
+    case 'crucex':
+      if (args[0] === '--version' || args[0] === '-v')
+        return [{ text: 'crucex v1.0.0', color: 'lime' }]
+      if (args[0] === 'help')
+        return [
+          { text: 'Usage: crucex <command> [options]', color: 'default' },
+          { text: '  scan <url>     Scan a target for header and port issues', color: 'muted' },
+          { text: '  --version      Print version', color: 'muted' },
+          { text: '  help           Show this help', color: 'muted' },
+        ]
+      if (args[0] === 'scan')
+        return [
+          { text: `scanning ${args[1] ?? '<url>'}...`, color: 'muted' },
+          { text: '  resolving DNS ........... OK', color: 'lime' },
+          { text: '  probing headers (8/8) ... OK', color: 'lime' },
+          { text: '  scanning ports (10/10) .. OK', color: 'lime' },
+          { text: '  checking vuln sigs ...... 3 findings', color: 'yellow' },
+          { text: 'grade  B    score  7.6 / 10', color: 'default' },
+        ]
+      return [{ text: `crucex: unknown command '${args[0] ?? ''}'. Try 'crucex help'.`, color: 'red' }]
+    case 'help': {
+      const row = (cmd, desc) => ({ parts: [
+        { text: '    ', color: 'muted' },
+        { text: cmd, color: 'lime' },
+        { text: ' — ', color: 'muted' },
+        { text: desc, color: 'muted' },
+      ]})
+      return [
+        { text: 'Available commands:', color: 'lime' },
+        { text: '', color: 'muted' },
+        { text: '  System', color: 'default' },
+        row('whoami',       'print current username'),
+        row('id',           'print uid, gid and groups'),
+        row('pwd',          'print working directory'),
+        row('uname [-a]',   'print system info'),
+        row('date',         'print current date and time'),
+        { text: '', color: 'muted' },
+        { text: '  Files', color: 'default' },
+        row('ls',           'list files in current directory'),
+        row('cat <file>',   'print file contents'),
+        row('echo <text>',  'print text to output'),
+        { text: '', color: 'muted' },
+        { text: '  Crucex', color: 'default' },
+        row('crucex scan <url>', 'run a full security scan'),
+        row('crucex help',       'show crucex usage'),
+        row('crucex --version',  'print version'),
+        { text: '', color: 'muted' },
+        { text: '  Terminal', color: 'default' },
+        row('clear', 'clear terminal output'),
+        row('help',  'show this help'),
+      ]
+    }
+    case 'clear':
+      return null
+    default:
+      return [{ text: `${cmd}: command not found`, color: 'red' }]
+  }
+}
+
+function colorClass(c) {
+  return c === 'lime'   ? 'text-lime-700 dark:text-lime-400'    :
+         c === 'yellow' ? 'text-yellow-500 dark:text-yellow-400' :
+         c === 'red'    ? 'text-red-500 dark:text-red-400'       :
+         c === 'muted'  ? 'text-gray-500 dark:text-[#555]'       :
+                          'text-gray-700 dark:text-[#ccc]'
+}
+
+function CmdOutput({ lines }) {
+  return lines.map((l, i) =>
+    l.parts ? (
+      <p key={i}>
+        {'  '}{l.parts.map((p, j) => (
+          <span key={j} className={colorClass(p.color)}>{p.text}</span>
+        ))}
+      </p>
+    ) : (
+      <p key={i} className={colorClass(l.color)}>
+        {'  '}{l.text}
+      </p>
+    )
+  )
+}
+
 function TerminalMock() {
-  const [history,  setHistory]  = useState([])
-  const [input,    setInput]    = useState('')
+  const [history,    setHistory]    = useState([])
+  const [input,      setInput]      = useState('')
+  const [showTooltip, setShowTooltip] = useState(false)
   const scrollRef = useRef(null)
   const inputRef  = useRef(null)
 
@@ -141,10 +265,14 @@ function TerminalMock() {
     if (e.key === 'Enter') {
       e.preventDefault()
       const cmd = input.trim()
-      if (cmd) {
-        setHistory(h => [...h, cmd])
-        setInput('')
+      if (!cmd) return
+      const output = runCommand(cmd)
+      if (output === null) {
+        setHistory([])
+      } else {
+        setHistory(h => [...h, { cmd, output }])
       }
+      setInput('')
     }
   }
 
@@ -155,8 +283,10 @@ function TerminalMock() {
   }
 
   useEffect(() => {
-    if (history.length === 0 || !scrollRef.current) return
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    if (!scrollRef.current) return
+    setTimeout(() => {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }, 0)
   }, [history])
 
   return (
@@ -172,6 +302,30 @@ function TerminalMock() {
           />
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-lime-400/60" />
+
+          {/* Info button */}
+          <div className="relative">
+            <button
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              onFocus={() => setShowTooltip(true)}
+              onBlur={() => setShowTooltip(false)}
+              className="w-3 h-3 rounded-full border border-gray-300 dark:border-[#444] text-gray-400 dark:text-[#555] hover:border-lime-500 hover:text-lime-600 dark:hover:text-lime-400 transition-colors flex items-center justify-center text-[8px] font-bold"
+              style={{ paddingTop: '1px' }}
+            >
+              i
+            </button>
+            {showTooltip && (
+              <div className="absolute left-0 top-5 z-10 w-56 rounded border border-gray-200 dark:border-[#2a2a2a] bg-white dark:bg-[#111] shadow-lg px-3 py-2.5 space-y-1 text-[11px] text-gray-600 dark:text-[#aaa]">
+                <p className="font-semibold text-gray-800 dark:text-[#e0e0e0] mb-1.5">Available commands</p>
+                <p><span className="text-lime-700 dark:text-lime-400">whoami</span> · <span className="text-lime-700 dark:text-lime-400">id</span> · <span className="text-lime-700 dark:text-lime-400">pwd</span> · <span className="text-lime-700 dark:text-lime-400">date</span></p>
+                <p><span className="text-lime-700 dark:text-lime-400">uname [-a]</span> · <span className="text-lime-700 dark:text-lime-400">echo</span> · <span className="text-lime-700 dark:text-lime-400">ls</span> · <span className="text-lime-700 dark:text-lime-400">cat</span></p>
+                <p><span className="text-lime-700 dark:text-lime-400">crucex scan &lt;url&gt;</span></p>
+                <p><span className="text-lime-700 dark:text-lime-400">clear</span> · <span className="text-lime-700 dark:text-lime-400">help</span></p>
+                <p className="text-gray-400 dark:text-[#555] pt-1 border-t border-gray-100 dark:border-[#1e1e1e] mt-1">Type <span className="text-gray-600 dark:text-[#888]">help</span> for full details</p>
+              </div>
+            )}
+          </div>
         </div>
         <span className="text-[11px] text-gray-500 dark:text-[#555]">crucex - scan</span>
         <span className="text-[11px] text-lime-700 dark:text-lime-500 flex items-center gap-1.5">
@@ -179,7 +333,7 @@ function TerminalMock() {
         </span>
       </div>
 
-      {/* Scrollable output — flex-1 + min-h-0 fills remaining space exactly */}
+      {/* Scrollable output */}
       <div
         ref={scrollRef}
         className="flex-1 min-h-0 px-5 pt-5 pb-2 space-y-1 text-gray-600 dark:text-[#aaa] overflow-y-auto overscroll-none relative"
@@ -187,14 +341,14 @@ function TerminalMock() {
         onWheel={e => {
           const el = scrollRef.current
           if (!el) return
-          const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1
-          const atTop    = el.scrollTop <= 0
-          if ((e.deltaY > 0 && atBottom) || (e.deltaY < 0 && atTop)) {
+          const canScrollDown = el.scrollTop + el.clientHeight < el.scrollHeight - 2
+          const canScrollUp = el.scrollTop > 0
+          if ((e.deltaY > 0 && !canScrollDown) || (e.deltaY < 0 && !canScrollUp)) {
             e.preventDefault()
           }
         }}
       >
-        <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-lime-400/6 to-transparent animate-scan pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-lime-400/6 to-transparent pointer-events-none" />
 
         {/* Static scan output */}
         <p>
@@ -222,16 +376,22 @@ function TerminalMock() {
           <span className="text-yellow-500 dark:text-yellow-400">Strict-Transport-Security</span>
         </p>
 
-        {/* User command history */}
-        {history.map((cmd, i) => (
-          <p key={i} className="mt-1">
-            <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
-            <span className="text-gray-900 dark:text-[#f2f2f2]">{cmd}</span>
-          </p>
+        {/* User command history with output */}
+        {history.map(({ cmd, output }, i) => (
+          <div key={i} className="mt-1">
+            <p>
+              <span className="text-lime-700 dark:text-lime-400">$</span>{' '}
+              <span className="text-gray-900 dark:text-[#f2f2f2]">{cmd}</span>
+            </p>
+            <CmdOutput lines={output} />
+          </div>
         ))}
+
+        {/* Blockade — scroll boundary spacer */}
+        <div className="mt-8 pb-2" />
       </div>
 
-      {/* Interactive input row — flex-none stays pinned at the bottom */}
+      {/* Interactive input row */}
       <div
         className="flex-none flex items-center gap-2 px-5 py-3 border-t border-gray-100 dark:border-[#1e1e1e] cursor-text"
         onClick={() => inputRef.current?.focus()}
