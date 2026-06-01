@@ -1,6 +1,7 @@
 const express = require('express')
-const { validateUrl } = require('../middleware/validate')
-const { scanUrlRules } = require('../middleware/validators')
+const { validateUrl }          = require('../middleware/validate')
+const { scanUrlRules }         = require('../middleware/validators')
+const { scanConcurrencyLimit } = require('../middleware/concurrencyLimit')
 const headerService = require('../services/headerService')
 const pythonBridge  = require('../services/pythonBridge')
 
@@ -47,7 +48,7 @@ router.post('/headers', ...scanUrlRules, validateUrl, async (req, res) => {
 })
 
 // POST /api/scan/ports
-router.post('/ports', ...scanUrlRules, validateUrl, async (req, res, next) => {
+router.post('/ports', ...scanUrlRules, validateUrl, scanConcurrencyLimit, async (req, res, next) => {
   try {
     const result = await pythonBridge.post('/scan/ports', { url: req.body.url })
     res.json(result)
@@ -60,7 +61,7 @@ router.post('/ports', ...scanUrlRules, validateUrl, async (req, res, next) => {
 })
 
 // POST /api/scan/report
-router.post('/report', ...scanUrlRules, validateUrl, async (req, res, next) => {
+router.post('/report', ...scanUrlRules, validateUrl, scanConcurrencyLimit, async (req, res, next) => {
   try {
     const [headers, ports] = await Promise.all([
       headerService.checkHeaders(req.body.url),

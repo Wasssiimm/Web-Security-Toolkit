@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { assertSafeHost, SsrfError } = require('../utils/ipUtils')
 
 const HEADERS = [
   {
@@ -51,28 +52,55 @@ const HEADERS = [
   }
 ]
 
-async function checkHeaders(url) {
+const REQUEST_OPTIONS = {
+  timeout:        5000,
+  maxRedirects:   0,           // We follow redirects manually to validate each hop
+  validateStatus: () => true,  // Never throw on HTTP status — we want the headers
+  headers:        { 'User-Agent': 'WebSecurityToolkit/1.0' }
+}
+
+async function checkHeaders(targetUrl) {
   let response
+  let currentUrl = targetUrl
+
   try {
-    response = await axios.get(url, {
-      timeout: 5000,
-      validateStatus: () => true,   // don't throw on 4xx/5xx — we still want the headers
-      headers: { 'User-Agent': 'WebSecurityToolkit/1.0' }
-    })
+    response = await axios.get(currentUrl, REQUEST_OPTIONS)
+
+    // Follow redirects manually — each hop gets the same SSRF check as the initial URL.
+    // Without this, an attacker can submit https://public.example.com which redirects
+    // to http://169.254.169.254/ (AWS metadata) — bypassing the initial hostname check.
+    for (let hops = 0; hops < 5 && response.status >= 300 && response.status < 400; hops++) {
+      const location = response.headers.location
+      if (!location) break
+
+      const nextUrl  = new URL(location, currentUrl).href
+      const { hostname, protocol } = new URL(nextUrl)
+
+      if (!['http:', 'https:'].includes(protocol)) {
+        throw new SsrfError('Redirect to non-HTTP protocol blocked')
+      }
+
+      await assertSafeHost(hostname) // throws SsrfError if private
+
+      currentUrl = nextUrl
+      response   = await axios.get(currentUrl, REQUEST_OPTIONS)
+    }
   } catch (err) {
-    // Network-level failure: DNS error, timeout, connection refused, etc.
+    if (err instanceof SsrfError) {
+      throw new Error(`Could not reach ${targetUrl}: ${err.message}`)
+    }
     const reason = err.code === 'ECONNABORTED' ? 'Request timed out after 5s'
                  : err.code === 'ENOTFOUND'    ? 'Domain could not be resolved (DNS failure)'
                  : err.message
-    throw new Error(`Could not reach ${url}: ${reason}`)
+    throw new Error(`Could not reach ${targetUrl}: ${reason}`)
   }
 
-  const raw = response.headers
+  const raw     = response.headers
   const headers = {}
-  let score = 0
+  let   score   = 0
 
   for (const h of HEADERS) {
-    const value = raw[h.key] || null
+    const value   = raw[h.key] || null
     const present = !!value
     headers[h.key] = {
       present,
@@ -84,7 +112,7 @@ async function checkHeaders(url) {
     if (present) score++
   }
 
-  return { url, headers, headerScore: score, maxHeaderScore: HEADERS.length }
+  return { url: targetUrl, headers, headerScore: score, maxHeaderScore: HEADERS.length }
 }
 
 module.exports = { checkHeaders }
