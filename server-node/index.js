@@ -1,10 +1,12 @@
 require('dotenv').config()
-const { randomUUID } = require('crypto')
+const { randomUUID }  = require('crypto')
+const { execSync }    = require('child_process')
 const express   = require('express')
 const cors      = require('cors')
 const helmet    = require('helmet')
 const rateLimit = require('express-rate-limit')
 const morgan    = require('morgan')
+const axios     = require('axios')
 const logger    = require('./logger')
 
 const scanRoutes     = require('./routes/scan')
@@ -110,7 +112,32 @@ app.use(globalLimiter)
 app.use('/api/scan',     scanLimiter,     scanRoutes)
 app.use('/api/password', passwordLimiter, passwordRoutes)
 
-app.get('/health', (_req, res) => res.json({ status: 'ok' }))
+app.get('/health', async (_req, res) => {
+  const health = { status: 'ok', python: 'ok', nmap: 'ok', uptime: Math.floor(process.uptime()) }
+  let httpStatus = 200
+
+  // Ping the Python engine — if it's down the scanner is broken
+  try {
+    await axios.get(`${process.env.PYTHON_API_URL || 'http://localhost:8000'}/health`, { timeout: 3000 })
+  } catch {
+    health.python = 'unreachable'
+    health.status = 'degraded'
+    httpStatus = 503
+    logger.warn('Health check: Python engine unreachable')
+  }
+
+  // Verify nmap is on PATH — port scans will fail without it
+  try {
+    execSync('nmap --version', { timeout: 2000, stdio: 'ignore' })
+  } catch {
+    health.nmap = 'not found'
+    health.status = 'degraded'
+    httpStatus = 503
+    logger.warn('Health check: nmap not found on PATH')
+  }
+
+  res.status(httpStatus).json(health)
+})
 
 // ── Global error handler ──────────────────────────────────────────────────────
 // Logs the real error server-side; returns safe, generic messages to clients.
