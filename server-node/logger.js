@@ -27,11 +27,14 @@ const logger = createLogger({
   transports: [new transports.Console()]
 })
 
-// Betterstack Logtail transport — only active in production when token is configured
-if (IS_PROD && process.env.LOGTAIL_SOURCE_TOKEN) {
-  const { Logtail }        = require('@logtail/node')
+// Betterstack Logtail transport — active whenever the token is set (dev or prod)
+if (process.env.LOGTAIL_SOURCE_TOKEN) {
+  const { Logtail }          = require('@logtail/node')
   const { LogtailTransport } = require('@logtail/winston')
-  logger.add(new LogtailTransport(new Logtail(process.env.LOGTAIL_SOURCE_TOKEN)))
+  const logtailOptions = process.env.LOGTAIL_INGESTING_HOST
+    ? { endpoint: `https://${process.env.LOGTAIL_INGESTING_HOST}` }
+    : {}
+  logger.add(new LogtailTransport(new Logtail(process.env.LOGTAIL_SOURCE_TOKEN, logtailOptions)))
 }
 
 // Morgan stream — pipes HTTP access log lines into Winston at 'http' level

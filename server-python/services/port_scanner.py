@@ -1,8 +1,12 @@
 import ipaddress
+import logging
 import re
 import socket
+import time
 from urllib.parse import urlparse
 import nmap
+
+logger = logging.getLogger(__name__)
 
 PORTS = "21,22,23,25,80,443,3306,5432,8080,27017"
 
@@ -75,11 +79,14 @@ def scan(url: str) -> dict:
 
     try:
         nm = nmap.PortScanner()
+        logger.info('Port scan starting: %s', host)
+        _start = time.monotonic()
         # -sT             = TCP connect scan (no root/admin required)
         # -T4             = aggressive timing (faster, acceptable for authorised scans)
         # --host-timeout  = bail out after 30s — never block indefinitely on one host
         # --max-retries 1 = one retry max — avoids hanging on filtered ports
         nm.scan(hosts=host, ports=PORTS, arguments="-sT -T4 --host-timeout 30s --max-retries 1")
+        logger.info('Port scan complete: %s (%dms)', host, round((time.monotonic() - _start) * 1000))
     except nmap.PortScannerError:
         raise RuntimeError(
             "nmap is not installed or could not be executed. "

@@ -1,5 +1,7 @@
+import json
 import logging
 import os
+import time
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -7,6 +9,33 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from routers import scan, password
 from limiter import limiter
+
+# ── Logging configuration ─────────────────────────────────────────────────────
+# Production: structured JSON lines (machine-readable, easy to ship to Betterstack etc.)
+# Development: human-readable coloured format
+_IS_PROD = os.getenv('PYTHON_ENV') == 'production'
+
+
+class _JsonFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        entry = {
+            'time':    self.formatTime(record, '%Y-%m-%dT%H:%M:%S'),
+            'level':   record.levelname.lower(),
+            'logger':  record.name,
+            'message': record.getMessage(),
+        }
+        if record.exc_info:
+            entry['exception'] = self.formatException(record.exc_info)
+        return json.dumps(entry)
+
+
+_handler = logging.StreamHandler()
+_handler.setFormatter(
+    _JsonFormatter() if _IS_PROD
+    else logging.Formatter('%(asctime)s %(levelname)-8s %(name)s: %(message)s', datefmt='%H:%M:%S')
+)
+# force=True replaces any handlers uvicorn already attached to the root logger
+logging.basicConfig(level=logging.INFO, handlers=[_handler], force=True)
 
 logger = logging.getLogger(__name__)
 
@@ -55,8 +84,19 @@ async def validation_handler(request: Request, exc: RequestValidationError):
 
 @app.exception_handler(Exception)
 async def generic_handler(request: Request, exc: Exception):
-    logger.error('Unhandled error on %s: %s', request.url.path, exc, exc_info=True)
+    logger.exception('Unhandled error on %s: %s', request.url.path, exc)
     return JSONResponse(status_code=500, content={'error': 'Internal server error'})
+
+# ── Request logging middleware ────────────────────────────────────────────────
+# Added last so it runs first (outermost), capturing total duration for every request.
+# Logs method, path, status, and duration — never logs request body.
+@app.middleware('http')
+async def log_requests(request: Request, call_next):
+    start = time.monotonic()
+    response = await call_next(request)
+    duration_ms = round((time.monotonic() - start) * 1000, 1)
+    logger.info('%s %s %d %.1fms', request.method, request.url.path, response.status_code, duration_ms)
+    return response
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 app.include_router(scan.router,     prefix='/scan')
