@@ -2,6 +2,8 @@ import json
 import logging
 import os
 import time
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -38,6 +40,21 @@ _handler.setFormatter(
 logging.basicConfig(level=logging.INFO, handlers=[_handler], force=True)
 
 logger = logging.getLogger(__name__)
+
+# ── Sentry ────────────────────────────────────────────────────────────────────
+# Only active when SENTRY_DSN is set. FastAPI + Starlette integrations add
+# automatic request context and exception capture.
+_SENTRY_DSN = os.getenv('SENTRY_DSN', '')
+if _SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.fastapi import FastApiIntegration
+    from sentry_sdk.integrations.starlette import StarletteIntegration
+    sentry_sdk.init(
+        dsn=_SENTRY_DSN,
+        environment=os.getenv('PYTHON_ENV', 'development'),
+        traces_sample_rate=0.2,
+        integrations=[StarletteIntegration(), FastApiIntegration()],
+    )
 
 _INTERNAL_TOKEN = os.getenv('INTERNAL_API_TOKEN', '')
 

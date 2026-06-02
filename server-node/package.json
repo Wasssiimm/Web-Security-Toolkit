@@ -9,6 +9,7 @@
   "dependencies": {
     "@logtail/node": "^0.5.8",
     "@logtail/winston": "^0.5.8",
+    "@sentry/node": "^10.56.0",
     "axios": "1.16.0",
     "cors": "2.8.6",
     "dotenv": "16.6.1",
