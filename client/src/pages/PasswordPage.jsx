@@ -35,6 +35,7 @@ export default function PasswordPage() {
       ])
       setAnalysis(analysisRes.data)
       setBreach(breachRes.data)
+      window.umami?.track('password_analysed')
     } catch (err) {
       setError(err.response?.data?.error ?? 'Something went wrong. Please try again.')
     } finally {

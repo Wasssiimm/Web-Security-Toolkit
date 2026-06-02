@@ -21,6 +21,7 @@ export default function ScannerPage() {
     try {
       const { data } = await scanReport(url)
       setReport(data)
+      window.umami?.track('scan_submitted')
     } catch (err) {
       setError(err.response?.data?.error ?? 'Something went wrong. Please try again.')
     } finally {
