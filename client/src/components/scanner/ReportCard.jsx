@@ -9,6 +9,7 @@ export default function ReportCard({ report }) {
     a.download = `security-report-${new Date().toISOString().split('T')[0]}.json`
     a.click()
     URL.revokeObjectURL(url)
+    window.umami?.track('report_exported')
   }
 
   return (

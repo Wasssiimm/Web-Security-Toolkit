@@ -9,7 +9,7 @@
       NOTE: frame-ancestors is NOT supported in <meta> tags (browsers ignore it).
       It must be set as an HTTP response header in Nginx — see Phase 9 Nginx config.
     -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; object-src 'none'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.umami.is; img-src 'self' data:; object-src 'none'" />
     <link rel="icon" type="image/png" href="/crucexv3.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,6 +19,8 @@
     <!-- Theme detection must run before React mounts to prevent flash of wrong theme.
          External file so it is allowed by script-src 'self'. -->
     <script src="/theme-init.js"></script>
+    <!-- Umami Analytics — cookieless, GDPR-compliant. Only active when VITE_UMAMI_WEBSITE_ID is set. -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="%VITE_UMAMI_WEBSITE_ID%"></script>
   </head>
   <body>
     <div id="root"></div>
