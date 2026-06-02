@@ -1,8 +1,11 @@
 require('dotenv').config()
+const { randomUUID } = require('crypto')
 const express   = require('express')
 const cors      = require('cors')
 const helmet    = require('helmet')
 const rateLimit = require('express-rate-limit')
+const morgan    = require('morgan')
+const logger    = require('./logger')
 
 const scanRoutes     = require('./routes/scan')
 const passwordRoutes = require('./routes/password')
@@ -18,10 +21,20 @@ if (IS_PROD) {
   const required = ['CORS_ORIGIN', 'INTERNAL_API_TOKEN']
   const missing  = required.filter(k => !process.env[k])
   if (missing.length) {
-    console.error(`FATAL: missing required env vars in production: ${missing.join(', ')}`)
+    logger.error(`FATAL: missing required env vars in production: ${missing.join(', ')}`)
     process.exit(1)
   }
 }
+
+// ── Request ID ───────────────────────────────────────────────────────────────
+// Attach a unique ID to every request so log lines can be correlated.
+app.use((req, _res, next) => { req.id = randomUUID(); next() })
+
+// ── HTTP access logging (Morgan → Winston) ───────────────────────────────────
+// Logs method, URL, status, response time, and request ID per request.
+// Never logs request bodies — passwords and URLs stay out of logs.
+morgan.token('req-id', (req) => req.id)
+app.use(morgan(':req-id :method :url :status :response-time ms', { stream: logger.stream }))
 
 // ── Security headers ─────────────────────────────────────────────────────────
 // Must be the very first middleware so every response carries these headers.
@@ -64,7 +77,10 @@ app.set('trust proxy', 1)
 const limiterDefaults = {
   standardHeaders: true,  // Sends RateLimit-* and Retry-After headers (RFC standard)
   legacyHeaders:   false, // Disables the old X-RateLimit-* headers
-  message:         { error: 'Rate limit exceeded' }
+  handler: (req, res, _next, opts) => {
+    logger.warn('Rate limit exceeded', { ip: req.ip, path: req.path })
+    res.status(opts.statusCode).json({ error: 'Rate limit exceeded' })
+  }
 }
 
 // Global ceiling — all routes combined per IP
@@ -101,7 +117,7 @@ app.get('/health', (_req, res) => res.json({ status: 'ok' }))
 // 4xx errors from middleware (body-parser 413, JSON syntax 400) keep their
 // status codes but get sanitised messages. Everything else → generic 500.
 app.use((err, _req, res, _next) => {
-  console.error(err)
+  logger.error(err.message || 'Unhandled error', { stack: err.stack, status: err.status })
   const status = err.status || err.statusCode || 500
   if (status === 413) {
     return res.status(413).json({ error: 'Request body too large' })
@@ -112,4 +128,4 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Internal server error' })
 })
 
-app.listen(PORT, () => console.log(`Node API running on http://localhost:${PORT}`))
+app.listen(PORT, () => logger.info(`Node API running on http://localhost:${PORT}`))
