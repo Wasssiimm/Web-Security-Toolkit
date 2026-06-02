@@ -449,8 +449,8 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-7 animate-fade-up">
             <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-[1.05] text-gray-900 dark:text-[#f2f2f2]">
-              Security tools<br />for developers<br />
-              <span className="text-lime-500 dark:text-lime-400">who ship.</span>
+              Find the gaps<br />before attackers<br />
+              <span className="text-lime-500 dark:text-lime-400">find them.</span>
             </h1>
 
             <p className="text-base text-gray-600 dark:text-[#888] leading-relaxed max-w-lg">
