@@ -14,7 +14,7 @@ export default function PasswordForm({ onSubmit, loading }) {
     <form onSubmit={handleSubmit}>
       <div className="flex gap-3">
         <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono-cyber text-lime-500 dark:text-lime-500 pointer-events-none">$&gt;</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono-cyber text-lime-500 dark:text-lime-500 pointer-events-none">$ &gt;</span>
           <input
             type={show ? 'text' : 'password'}
             name="password"
