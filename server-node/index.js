@@ -1,4 +1,15 @@
 require('dotenv').config()
+
+// ── Sentry (must be initialised before other imports for full auto-instrumentation)
+const Sentry = require('@sentry/node')
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn:              process.env.SENTRY_DSN,
+    environment:      process.env.NODE_ENV || 'development',
+    tracesSampleRate: 0.2,  // capture 20% of transactions for performance monitoring
+  })
+}
+
 const { randomUUID }  = require('crypto')
 const { execSync }    = require('child_process')
 const express   = require('express')
@@ -138,6 +149,10 @@ app.get('/health', async (_req, res) => {
 
   res.status(httpStatus).json(health)
 })
+
+// ── Sentry error handler ──────────────────────────────────────────────────────
+// Must be after all routes so Sentry sees the full request context on errors.
+if (process.env.SENTRY_DSN) Sentry.setupExpressErrorHandler(app)
 
 // ── Global error handler ──────────────────────────────────────────────────────
 // Logs the real error server-side; returns safe, generic messages to clients.
