@@ -1,0 +1,34 @@
+meta {
+  name: Vulnerability Detection
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{pythonUrl}}/scan/vulnerabilities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "headers": {
+      "url": "https://example.com",
+      "headers": {
+        "content-security-policy": { "present": false },
+        "strict-transport-security": { "present": false },
+        "x-frame-options": { "present": true, "quality": "good", "issues": [] },
+        "x-content-type-options": { "present": true, "quality": "good", "issues": [] },
+        "referrer-policy": { "present": false }
+      }
+    },
+    "ports": {
+      "host": "example.com",
+      "ports": [
+        { "port": 80, "state": "open" },
+        { "port": 443, "state": "open" },
+        { "port": 3306, "state": "open" }
+      ]
+    }
+  }
+}

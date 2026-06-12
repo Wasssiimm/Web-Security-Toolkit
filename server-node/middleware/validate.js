@@ -1,21 +1,31 @@
-const PRIVATE_IP = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/i
+const { assertSafeHost, SsrfError } = require('../utils/ipUtils')
 
-function validateUrl(req, res, next) {
+async function validateUrl(req, res, next) {
   const { url } = req.body
   if (!url || typeof url !== 'string') {
     return res.status(400).json({ error: 'url is required' })
   }
+
+  let parsed
   try {
-    const parsed = new URL(url)
-    if (!['http:', 'https:'].includes(parsed.protocol)) {
-      return res.status(400).json({ error: 'Only http and https URLs are allowed' })
-    }
-    if (PRIVATE_IP.test(parsed.hostname)) {
-      return res.status(400).json({ error: 'Scanning private/local addresses is not allowed' })
-    }
+    parsed = new URL(url)
   } catch {
     return res.status(400).json({ error: 'Invalid URL' })
   }
+
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    return res.status(400).json({ error: 'Only http and https URLs are allowed' })
+  }
+
+  try {
+    await assertSafeHost(parsed.hostname)
+  } catch (err) {
+    if (err instanceof SsrfError) {
+      return res.status(400).json({ error: err.message })
+    }
+    return res.status(400).json({ error: 'Invalid URL' })
+  }
+
   next()
 }
 

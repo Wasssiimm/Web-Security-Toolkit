@@ -7,3 +7,10 @@ __pycache__/
 venv/
 .DS_Store
 .claude/
+
+bruno/environments/local.bru
+
+CLAUDE.md
+POA_*.md
+.agents/
+skills-lock.json

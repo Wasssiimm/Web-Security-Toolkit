@@ -1,0 +1,7 @@
+vars {
+  nodeUrl: http://localhost:3001
+  pythonUrl: http://localhost:8000
+  testUrl: https://github.com
+  testPassword: replace-with-any-test-password
+  testHash: replace-with-sha1-hash-of-your-test-password
+}

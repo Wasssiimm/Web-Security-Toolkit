@@ -1,32 +1,32 @@
 const express = require('express')
 const pythonBridge = require('../services/pythonBridge')
 const hibpService  = require('../services/hibpService')
+const { passwordAnalyzeRules, passwordBreachRules } = require('../middleware/validators')
 
 const router = express.Router()
 
-router.post('/analyze', async (req, res) => {
-  const { password } = req.body
-  if (!password || typeof password !== 'string') {
-    return res.status(400).json({ error: 'password is required' })
-  }
+function isBridgeDown(err) {
+  return err.code === 'ECONNREFUSED' || err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT'
+}
+
+router.post('/analyze', ...passwordAnalyzeRules, async (req, res, next) => {
   try {
-    const result = await pythonBridge.post('/password/analyze', { password })
+    const result = await pythonBridge.post('/password/analyze', { password: req.body.password })
     res.json(result)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    if (isBridgeDown(err)) {
+      return res.status(503).json({ error: 'Security engine unavailable — try again later.' })
+    }
+    next(err)
   }
 })
 
-router.post('/breach', async (req, res) => {
-  const { hashPrefix } = req.body
-  if (!hashPrefix || typeof hashPrefix !== 'string' || hashPrefix.length !== 5) {
-    return res.status(400).json({ error: 'hashPrefix must be exactly 5 hex characters' })
-  }
+router.post('/breach', ...passwordBreachRules, async (req, res, next) => {
   try {
-    const result = await hibpService.checkBreach(hashPrefix)
+    const result = await hibpService.checkBreach(req.body.hash)
     res.json(result)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    next(err) // HIBP errors — global handler returns generic 500, no internal details
   }
 })
 
