@@ -47,12 +47,18 @@ def _check_xfo(value: str) -> dict:
 def _check_referrer(value: str) -> dict:
     STRICT = {"no-referrer", "strict-origin", "strict-origin-when-cross-origin", "no-referrer-when-downgrade"}
     WEAK   = {"unsafe-url", "origin", "origin-when-cross-origin"}
-    v = value.strip().lower()
+    # Referrer-Policy accepts a comma-separated fallback list (e.g. GitHub sends
+    # "origin-when-cross-origin, strict-origin-when-cross-origin") — browsers apply
+    # the last token they recognise, so validate against that one, not the raw string.
+    tokens = [t.strip().lower() for t in value.split(",") if t.strip()]
+    known = [t for t in tokens if t in STRICT or t in WEAK]
+    unknown = [t for t in tokens if t not in STRICT and t not in WEAK]
     issues = []
-    if v in WEAK:
-        issues.append(f"'{value}' sends referrer data broadly — consider a stricter policy")
-    elif v not in STRICT:
-        issues.append(f"Unrecognised value '{value}'")
+    if unknown:
+        issues.append(f"Unrecognised value '{', '.join(unknown)}'")
+    effective = known[-1] if known else None
+    if effective in WEAK:
+        issues.append(f"'{effective}' sends referrer data broadly — consider a stricter policy")
     quality = "good" if not issues else "weak"
     return {"quality": quality, "issues": issues}
 

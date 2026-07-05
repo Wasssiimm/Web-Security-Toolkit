@@ -13,6 +13,19 @@ function isBridgeDown(err) {
   return err.code === 'ECONNREFUSED' || err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT'
 }
 
+// Python responded (didn't just fail to connect) with a status we've deliberately
+// designed to be safe to relay as-is — host validation (400) and tool/engine
+// unavailable (503). Both carry a sanitised `detail` string, never a traceback.
+// Anything else (422, 429, 500 from Python) is deliberately NOT relayed here and
+// falls through to the generic 500 handler, since we haven't vetted those bodies.
+function pythonRelayError(err) {
+  const status = err.response?.status
+  if (status === 400 || status === 503) {
+    return { status, message: err.response.data?.detail || 'Security engine rejected the request' }
+  }
+  return null
+}
+
 function rawHeaderValues(headersResult) {
   return Object.fromEntries(
     Object.entries(headersResult.headers)
@@ -56,6 +69,10 @@ router.post('/ports', ...scanUrlRules, validateUrl, scanConcurrencyLimit, async 
     if (isBridgeDown(err)) {
       return res.status(503).json({ error: 'Security engine unavailable — try again later.' })
     }
+    const relayed = pythonRelayError(err)
+    if (relayed) {
+      return res.status(relayed.status).json({ error: relayed.message })
+    }
     next(err) // Unexpected — global handler returns generic 500, no internal details
   }
 })
@@ -89,6 +106,10 @@ router.post('/report', ...scanUrlRules, validateUrl, scanConcurrencyLimit, async
   } catch (err) {
     if (isBridgeDown(err)) {
       return res.status(503).json({ error: 'Security engine unavailable — try again later.' })
+    }
+    const relayed = pythonRelayError(err)
+    if (relayed) {
+      return res.status(relayed.status).json({ error: relayed.message })
     }
     // headerService throws user-facing messages
     if (err.message?.startsWith('Could not reach')) {
