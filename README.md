@@ -5,7 +5,6 @@ A full-stack web security tool built as a second-year Computer Science project a
 Built to learn how real security tooling works end-to-end — from HTTP header analysis and port scanning to entropy calculation and breach checking via the Have I Been Pwned API.
 
 ---
-
 ## What it does
 
 ### Web Security Scanner
@@ -21,6 +20,19 @@ Analyse a password without ever sending it to a server:
 - Calculates Shannon entropy and estimates crack time
 - Detects 13 weak pattern types (keyboard sequences, common words, repeated characters, etc.)
 - Checks against the Have I Been Pwned breach database using **k-anonymity** — only a 5-character SHA-1 prefix is sent; the full password never leaves the browser
+
+---
+
+## Screenshots
+
+**Homepage**
+![Homepage](docs/screenshots/Homepage.png)
+
+**Web Security Scanner** — full header, port, and vulnerability report with an A–F grade
+![Scanner](docs/screenshots/Scanner.png)
+
+**Password Analyzer** — strength, entropy, pattern detection, and HIBP breach check in one view
+![Password Analyzer](docs/screenshots/Passwordanalyzer.png)
 
 ---
 

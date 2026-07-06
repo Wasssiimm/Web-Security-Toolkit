@@ -1,6 +1,7 @@
 @echo off
 
-set BASE_DIR=C:\Users\balou\Documents\Web Security Toolkit - POA
+set BASE_DIR=%~dp0
+set BASE_DIR=%BASE_DIR:~0,-1%
 
 echo Starting all services in Windows Terminal tabs...
 
