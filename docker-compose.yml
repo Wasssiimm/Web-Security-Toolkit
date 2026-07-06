@@ -1,0 +1,58 @@
+services:
+  node:
+    image: ${DOCKERHUB_USERNAME}/crucex-node:${IMAGE_TAG:-latest}
+    container_name: crucex-node
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      PYTHON_API_URL: http://python:8000
+      PYTHON_ENV: production
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN}
+      CORS_ORIGIN: https://crucex.dev
+      RATE_LIMIT_GLOBAL: 200
+      RATE_LIMIT_SCAN: 10
+      RATE_LIMIT_PASSWORD: 40
+      MAX_CONCURRENT_SCANS: 3
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      LOGTAIL_SOURCE_TOKEN: ${LOGTAIL_SOURCE_TOKEN:-}
+      LOGTAIL_INGESTING_HOST: ${LOGTAIL_INGESTING_HOST:-}
+    # No ports published to the host — only Caddy talks to this, over the
+    # internal compose network. Not reachable from outside the VPS at all.
+    networks:
+      - internal
+
+  python:
+    image: ${DOCKERHUB_USERNAME}/crucex-python:${IMAGE_TAG:-latest}
+    container_name: crucex-python
+    restart: unless-stopped
+    environment:
+      PYTHON_ENV: production
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+    # Same as above — only reachable from `node` via the internal network,
+    # never exposed to the host or the internet.
+    networks:
+      - internal
+
+  caddy:
+    image: ${DOCKERHUB_USERNAME}/crucex-caddy:${IMAGE_TAG:-latest}
+    container_name: crucex-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - node
+    networks:
+      - internal
+
+networks:
+  internal:
+
+volumes:
+  caddy_data:
+  caddy_config:

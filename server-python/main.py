@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import shutil
 import time
 from dotenv import load_dotenv
 load_dotenv()
@@ -121,4 +122,5 @@ app.include_router(password.router, prefix='/password')
 
 @app.get('/health')
 def health():
-    return {'status': 'ok'}
+    nmap_ok = shutil.which('nmap') is not None
+    return {'status': 'ok', 'nmap': 'ok' if nmap_ok else 'not found'}

@@ -11,7 +11,6 @@ if (process.env.SENTRY_DSN) {
 }
 
 const { randomUUID }  = require('crypto')
-const { execSync }    = require('child_process')
 const express   = require('express')
 const cors      = require('cors')
 const helmet    = require('helmet')
@@ -127,24 +126,24 @@ app.get('/health', async (_req, res) => {
   const health = { status: 'ok', python: 'ok', nmap: 'ok', uptime: Math.floor(process.uptime()) }
   let httpStatus = 200
 
-  // Ping the Python engine — if it's down the scanner is broken
+  // Ping the Python engine — if it's down the scanner is broken. Python also
+  // reports whether nmap is on ITS PATH — Node can't check this locally since
+  // Node and Python may run in separate containers (Node's image has no nmap
+  // at all; only Python's does, since only Python ever calls it).
   try {
-    await axios.get(`${process.env.PYTHON_API_URL || 'http://localhost:8000'}/health`, { timeout: 3000 })
+    const { data } = await axios.get(`${process.env.PYTHON_API_URL || 'http://localhost:8000'}/health`, { timeout: 3000 })
+    if (data?.nmap && data.nmap !== 'ok') {
+      health.nmap = data.nmap
+      health.status = 'degraded'
+      httpStatus = 503
+      logger.warn('Health check: nmap not found on Python engine PATH')
+    }
   } catch {
     health.python = 'unreachable'
+    health.nmap = 'unknown'
     health.status = 'degraded'
     httpStatus = 503
     logger.warn('Health check: Python engine unreachable')
-  }
-
-  // Verify nmap is on PATH — port scans will fail without it
-  try {
-    execSync('nmap --version', { timeout: 2000, stdio: 'ignore' })
-  } catch {
-    health.nmap = 'not found'
-    health.status = 'degraded'
-    httpStatus = 503
-    logger.warn('Health check: nmap not found on PATH')
   }
 
   res.status(httpStatus).json(health)

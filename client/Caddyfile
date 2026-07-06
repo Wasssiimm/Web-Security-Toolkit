@@ -1,0 +1,22 @@
+{
+	# Let's Encrypt sends renewal/expiry notices here — replace with a real address you check.
+	email admin@crucex.dev
+}
+
+crucex.dev {
+	encode gzip
+
+	# Everything under /api is the Node gateway. Reached over the internal
+	# compose network by service name — never exposed to the internet directly.
+	handle /api/* {
+		reverse_proxy node:3001
+	}
+
+	# Everything else is the built React SPA. try_files falls back to
+	# index.html so client-side routes (e.g. /scanner) survive a hard refresh.
+	handle {
+		root * /usr/share/caddy
+		try_files {path} /index.html
+		file_server
+	}
+}
