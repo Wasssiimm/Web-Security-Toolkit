@@ -12,6 +12,14 @@ crucex.dev {
 		reverse_proxy node:3001
 	}
 
+	# Node's deep health check — not under /api, so it needs its own route.
+	# Without this, the SPA fallback below would silently serve index.html
+	# (a 200 OK) for /health regardless of actual backend health, making any
+	# uptime monitor pointed at it useless.
+	handle /health {
+		reverse_proxy node:3001
+	}
+
 	# Everything else is the built React SPA. try_files falls back to
 	# index.html so client-side routes (e.g. /scanner) survive a hard refresh.
 	handle {
