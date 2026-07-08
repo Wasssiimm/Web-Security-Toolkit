@@ -80,7 +80,29 @@ jobs:
             # created once by hand on the server, never touched by this workflow.
             export IMAGE_TAG=$IMAGE_TAG
             docker compose pull
-            docker compose up -d --remove-orphans
+
+            # docker compose up can transiently fail with "removal of container
+            # ... is already in progress" when recreating a container hits a
+            # Docker-engine race — the underlying operation usually still
+            # converges correctly a moment later. Retry a couple of times
+            # instead of treating one flaky exit code as a real failure.
+            up_ok=false
+            for i in 1 2 3; do
+              if docker compose up -d --remove-orphans; then
+                up_ok=true
+                break
+              fi
+              echo "docker compose up failed (attempt $i/3), retrying in 5s..."
+              sleep 5
+            done
+            if [ "$up_ok" != true ]; then
+              echo "docker compose up kept failing after 3 attempts — treating as a real failure."
+              docker compose down || true
+              IMAGE_TAG=stable docker compose up -d --remove-orphans
+              sleep 5
+              docker compose ps
+              exit 1
+            fi
 
             echo "Waiting for node + python to become healthy..."
             healthy() {
