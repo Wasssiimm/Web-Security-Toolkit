@@ -4,6 +4,8 @@ A full-stack web security tool built as a second-year Computer Science project a
 
 Built to learn how real security tooling works end-to-end — from HTTP header analysis and port scanning to entropy calculation and breach checking via the Have I Been Pwned API.
 
+https://crucex.dev/
+
 ---
 ## What it does
 
